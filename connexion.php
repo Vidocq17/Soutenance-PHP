@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (isset($error)): ?>
         <div><?php echo $error; ?></div>
     <?php endif; ?>
-    <form method="POST" action="home.php">
+    <form method="POST" action="connexion.php">
         <div>
             <label for="pseudo">Pseudo :</label>
             <input type="text" id="pseudo" name="pseudo" required>
