@@ -15,13 +15,13 @@ if (isset($_POST['register'])) {
     $password = $_POST['password'];
     $date_naissance = $_POST['date_naissance'];
 
-    // Connexion à la base de données avec PDO (code à adapter selon vos informations de connexion)
+
     $host = 'mysql:host=localhost;dbname=Soutenance_PHP';
     $usernameDB = 'root';
-    $passwordDB = '';
+    $passwordDB = 'root';
 
     try {
-        $pdo = new PDO($host, $usernameDB, $passwordDB);
+        $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         // Requête pour vérifier si l'adresse e-mail existe déjà dans la base de données
@@ -42,7 +42,7 @@ if (isset($_POST['register'])) {
 
                 try {
                     // Préparation de la requête d'insertion
-                    $query = "INSERT INTO user (lastname, firstname, pseudo, genre, email, password, date_naissance) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password, :date_naissance)";
+                    $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password, date_naissance) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password, :date_naissance)";
                     $statement = $pdo->prepare($query);
 
                     // Exécution de la requête avec les valeurs des paramètres
@@ -50,7 +50,7 @@ if (isset($_POST['register'])) {
                         'lastname' => $lastname,
                         'firstname' => $firstname,
                         'pseudo' => $pseudo,
-                        'genre' => $genre,
+                        'gender' => $genre,
                         'email' => $email,
                         'password' => $hashedPassword,
                         'date_naissance' => $date_naissance
