@@ -1,43 +1,40 @@
 <?php
-// Vérification si l'utilisateur est déjà connecté
-session_start();
-if (isset($_SESSION['user_id'])) {
-    header('Location: home.php'); // Rediriger vers la page d'accueil si l'utilisateur est déjà connecté
-    exit();
-}
-
-// Vérification formulaire connexion
+// Vérification si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupération des données du formulaire
-    $username = $_POST['username'];
+    $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
 
-    // Vérification des informations de connexion dans la bdd
-    $host = 'localhost';
-    $dbUsername = 'root';
-    $dbPassword = 'root';
-    $dbName = 'Soutenance';
+    // Connexion à la base de données avec PDO
+    $host = 'mysql:host=localhost;dbname=Soutenance_PHP'; 
+    $username = 'root'; 
+    $password = ''; 
 
-    $connection = mysqli_connect($host, $dbUsername, $dbPassword, $dbName);
-    if (!$connection) {
-        die('Erreur de connexion à la base de données : ' . mysqli_connect_error());
-    }
+    try{
+        // PDO à la place de Mysqli !!
+    $connection = new PDO($host, $username, $password);
+    }catch(PDOException $e) {
+    die('Erreur'.$e ->getMessage());
 
-    $query = "SELECT id, username, password FROM User WHERE username = '$username'";
-    $result = mysqli_query($connection, $query);
+        // Requête pour vérifier les informations de connexion de l'utilisateur
+        $query = "SELECT * FROM users WHERE pseudo = :pseudo";
+        $statement = $pdo->prepare($query);
+        $statement->execute(['pseudo' => $pseudo]);
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-    if ($result && mysqli_num_rows($result) > 0) {
-        $user = mysqli_fetch_assoc($result);
-        if (password_verify($password, $user['password'])) {
+        if ($user && password_verify($password, $user['password'])) {
+            // Les informations de connexion sont correctes
+            session_start();
             $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
+            $_SESSION['pseudo'] = $user['pseudo'];
             header('Location: home.php'); // Rediriger vers la page d'accueil après la connexion réussie
             exit();
+        } else {
+            $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
         }
+    } catch (PDOException $e) {
+        $error = 'Erreur de connexion à la base de données : ' . $e->getMessage();
     }
-
-    $error = 'Identifiant ou mot de passe incorrect.';
-    mysqli_close($connection);
 }
 ?>
 
@@ -46,36 +43,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <title>Connexion</title>
 </head>
-<link rel="stylesheet" href="connexion.css">
-
-<header>
-    <h1>Bienvenue sur WeChat !</h1>
-    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quibusdam et veniam modi fuga, tenetur sequi amet velit assumenda porro pariatur reprehenderit esse nisi a quas, laborum ut distinctio ratione nesciunt.</p>
-
-</header>
-
 <body>
-    
+    <h1>Connexion</h1>
     <?php if (isset($error)): ?>
         <div><?php echo $error; ?></div>
     <?php endif; ?>
-    <form method="POST" action="home.php">
-
-        <div class="content">
+    <form method="POST" action="connexion.php">
         <div>
-            <label for="username">Nom d'utilisateur :</label>
-            <input type="text" id="username" name="username" required>
+            <label for="pseudo">Pseudo :</label>
+            <input type="text" id="pseudo" name="pseudo" required>
         </div>
         <div>
             <label for="password">Mot de passe :</label>
             <input type="password" id="password" name="password" required>
         </div>
         <div>
-            <button type="submit"form="home.php">Se connecter</button>
+            <button type="submit">Se connecter</button>
         </div>
     </form>
     <p>Pas encore inscrit ? <a href="inscription.php">S'inscrire</a></p>
-    </div>
 </body>
 </html>
+
 
