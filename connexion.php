@@ -24,8 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
-            $errors[] = 'Ce pseudo est déjà utilisé. Veuillez en choisir un autre.';
         } else {
+            $errors[] = 'Ce pseudo est déjà utilisé. Veuillez en choisir un autre.';
         } 
         
         $query = "SELECT password  FROM user WHERE password = :password";
@@ -35,9 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         
         if ($user) {
-            $errors[] = 'Mot de passe incorrect.';
         } else {
-
+            $errors[] = 'Mot de passe incorrect.';
+            
         } 
 
 
