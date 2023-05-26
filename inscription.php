@@ -1,5 +1,4 @@
 <?php
-require('functions.php');
 
 session_start();
 
@@ -7,16 +6,16 @@ if (isset($_POST['register'])) {
     $errors = [];
 
     // Récupération des valeurs soumises dans le formulaire
-    $lastname = $_POST['lastname'];
     $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
     $pseudo = $_POST['pseudo'];
-    $genre = $_POST['genre'];
-    $email = $_POST['email'];
     $password = $_POST['password'];
+    $gender = $_POST['genre'];
     $date_naissance = $_POST['date_naissance'];
+    $email = $_POST['email'];
 
 
-    $host = 'mysql:host=localhost;dbname=Soutenance_PHP';
+    $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $usernameDB = 'root';
     $passwordDB = 'root';
 
@@ -31,30 +30,29 @@ if (isset($_POST['register'])) {
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
         if ($user) {
-            $errors[] = 'Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.';
+         //   $errors[] = 'Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.';
+
         } else {
             // Validation du pseudo
             if (strlen($pseudo) < 3) {
                 $errors[] = 'Le pseudo doit contenir au moins 3 caractères.';
             } else {
                 // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
                 try {
-                    // Préparation de la requête d'insertion
                     $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password, date_naissance) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password, :date_naissance)";
                     $statement = $pdo->prepare($query);
 
-                    // Exécution de la requête avec les valeurs des paramètres
                     $statement->execute([
-                        'lastname' => $lastname,
                         'firstname' => $firstname,
+                        'lastname' => $lastname,
                         'pseudo' => $pseudo,
-                        'gender' => $genre,
-                        'email' => $email,
-                        'password' => $hashedPassword,
-                        'date_naissance' => $date_naissance
-                    ]);
+                        'password' => $password,
+                        'genre' => $gender,
+                        'date_naissance' => $date_naissance,
+                        'email' => $email 
+                    ]); 
 
                     // Redirection vers la page home.php après l'enregistrement
                     header("Location: home.php");
@@ -102,7 +100,7 @@ if (isset($_POST['register'])) {
         <label for="pseudo">Pseudo :</label>
         <input type="text" id="pseudo" name="pseudo" required><br />
 
-        <!-- genre field -->
+        <!-- gender field -->
         <label>Genre:</label><br />
         <input type="radio" id="Autre" name="genre" value="Autre" checked>
         <label for="Autre">Autre</label>

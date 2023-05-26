@@ -1,0 +1,13 @@
+header {
+    display: flex;
+    flex-direction: row;
+}
+
+header ul {
+    display: flex;
+    align-items: center;
+}
+
+header ul li {
+    margin-left: 50px;
+}

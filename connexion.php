@@ -3,34 +3,44 @@ session_start();
 
 // Vérification si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
     // Récupération des 2 données nécessaires pour le formulaire de connexion. 
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
 
-    // Connexion à la base de données avec PDO
-    // Préciser le localhost puisque MAMP à imposé ça. 
+    // Connexion à la base de données avec PDO - Préciser le localhost puisque MAMP à imposé ça !
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP'; 
     $username = 'root'; 
     $dbPassword = 'root';
 
     try {
         // Connection à la base de données
-        $connection = new PDO($host, $username, $dbPassword);
+        $pdo = new PDO($host, $username, $dbPassword);
+
         // Requête de bdd
-        $query = "SELECT pseudo, password FROM user WHERE pseudo = :pseudo";
-        $statement = $connection->prepare($query);
+        $query = "SELECT pseudo  FROM user WHERE pseudo = :pseudo";
+        $statement = $pdo->prepare($query);
         $statement->execute(['pseudo' => $pseudo]);
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
-            // Les informations de connexion sont correctes
-            $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['pseudo'] = $user['pseudo'];
-            header('Location: home.php'); // Rediriger vers la page d'accueil après la connexion réussie
-            exit();
+        if ($user) {
+            $errors[] = 'Ce pseudo est déjà utilisé. Veuillez en choisir un autre.';
         } else {
-            $error = 'Nom d\'utilisateur ou mot de passe incorrect.';
-        }
+        } 
+        
+        $query = "SELECT password  FROM user WHERE password = :password";
+        $statement = $pdo->prepare($query);
+        $statement->execute(['password' => $password]);
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+        
+        
+        if ($user) {
+            $errors[] = 'Mot de passe incorrect.';
+        } else {
+
+        } 
+
+
     } catch (PDOException $e) {
         $error = 'Erreur de connexion à la base de données : ' . $e->getMessage();
     }
@@ -47,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (isset($error)): ?>
         <div><?php echo $error; ?></div>
     <?php endif; ?>
-    <form method="POST" action="connexion.php">
+    <form method="POST" action="home.php">
         <div>
             <label for="pseudo">Pseudo :</label>
             <input type="text" id="pseudo" name="pseudo" required>
@@ -63,3 +73,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p>Pas encore inscrit ? <a href="inscription.php">S'inscrire</a></p>
 </body>
 </html>
+

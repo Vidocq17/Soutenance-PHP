@@ -1,5 +1,5 @@
 <?php
-$host = 'mysql:host=localhost;dbname=Soutenance_PHP'; 
+$host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP'; 
 $username = 'root'; 
 $password = ''; 
 
