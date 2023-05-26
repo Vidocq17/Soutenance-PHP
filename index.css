@@ -1,0 +1,21 @@
+body {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 20vh;
+    gap: 5%;
+}
+
+a {
+    font-style: normal;
+    color: red;
+}
+
+.right-panel button {
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    margin: 0 50px;
+}
