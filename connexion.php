@@ -23,27 +23,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $statement->execute(['pseudo' => $pseudo]);
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if ($user) {
+         if ($user) {
+        // Vérification du mot de passe
+        if (password_verify($password, $user['password'])) {
+            // Les informations de connexion sont correctes
+            // Faites ici les actions appropriées (ex: connexion de l'utilisateur, redirection vers une page, etc.)
+            echo "Connexion réussie!";
         } else {
-            $errors[] = 'Ce pseudo est déjà utilisé. Veuillez en choisir un autre.';
-        } 
-        
-        $query = "SELECT password  FROM user WHERE password = :password";
-        $statement = $pdo->prepare($query);
-        $statement->execute(['password' => $password]);
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-        
-        
-        if ($user) {
-        } else {
-            $errors[] = 'Mot de passe incorrect.';
-            
-        } 
-
-
-    } catch (PDOException $e) {
-        $error = 'Erreur de connexion à la base de données : ' . $e->getMessage();
+            // Le mot de passe est incorrect
+            echo "Mot de passe incorrect.";
+        }
+    } else {
+        // L'utilisateur avec le pseudo donné n'existe pas
+        echo "Pseudo incorrect.";
     }
+} catch (PDOException $e) {
+    // Erreur de connexion à la base de données
+    echo "Erreur de connexion à la base de données : " . $e->getMessage();
+}
 }
 ?>
 

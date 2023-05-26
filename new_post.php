@@ -34,3 +34,8 @@ session_start()
     </form>
 </body>
 </html>
+
+INSERT INTO 
+SELECT * FROM POST where user.id=?
+associer des variables 
+php avec html et echo variables 
