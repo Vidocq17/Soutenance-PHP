@@ -1,30 +1,28 @@
 <?php
+session_start();
+
 // Vérification si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des données du formulaire
+    // Récupération des 2 données nécessaires pour le formulaire de connexion. 
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
 
     // Connexion à la base de données avec PDO
     $host = 'mysql:host=localhost;dbname=Soutenance_PHP'; 
     $username = 'root'; 
-    $password = ''; 
+    $dbPassword = '';
 
-    try{
-        // PDO à la place de Mysqli !!
-    $connection = new PDO($host, $username, $password);
-    }catch(PDOException $e) {
-    die('Erreur'.$e ->getMessage());
-
-        // Requête pour vérifier les informations de connexion de l'utilisateur
-        $query = "SELECT * FROM users WHERE pseudo = :pseudo";
-        $statement = $pdo->prepare($query);
+    try {
+        // Connection à la base de données
+        $connection = new PDO($host, $username, $dbPassword);
+        // Requête de bdd
+        $query = "SELECT * FROM user WHERE pseudo = :pseudo";
+        $statement = $connection->prepare($query);
         $statement->execute(['pseudo' => $pseudo]);
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($password, $user['password'])) {
             // Les informations de connexion sont correctes
-            session_start();
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['pseudo'] = $user['pseudo'];
             header('Location: home.php'); // Rediriger vers la page d'accueil après la connexion réussie
@@ -64,5 +62,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p>Pas encore inscrit ? <a href="inscription.php">S'inscrire</a></p>
 </body>
 </html>
-
-

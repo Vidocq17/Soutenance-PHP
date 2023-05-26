@@ -1,114 +1,135 @@
 <?php
-require ('functions.php');
-
+require('functions.php');
 
 session_start();
 
-if(isset($_POST['register'])) {
+if (isset($_POST['register'])) {
+    $errors = [];
 
-    /* Intéret de faire un tableau d'erreurs plutot qu'un required dans le formulaire : 
-        Le tableau est dans le PHP donc le back, côté serveur donc il n'est pas accessible par l'utilisateur,
-        contrairement au required qui est en HTML donc côté client donc accessible par le code source et donc 
-        modifiable */ 
+    // Récupération des valeurs soumises dans le formulaire
+    $lastname = $_POST['lastname'];
+    $firstname = $_POST['firstname'];
+    $pseudo = $_POST['pseudo'];
+    $genre = $_POST['genre'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $date_naissance = $_POST['date_naissance'];
 
-    // empty vérifie si la variable est vide et si elle existe déjà. 
-    if(not_empty(['lastname','firstname','pseudo','password','email','password_confirm'])) {
+    // Connexion à la base de données avec PDO (code à adapter selon vos informations de connexion)
+    $host = 'mysql:host=localhost;dbname=Soutenance_PHP';
+    $usernameDB = 'root';
+    $passwordDB = '';
 
-        $errors = []; // Tableau contenant les erreurs
+    try {
+        $pdo = new PDO($host, $usernameDB, $passwordDB);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        
-         // retourne le nombre de caractères
-        if(mb_strlen($_POST($pseudo) < 3)) {
-            $errors[] ="Erreur : pseudo trop court, 3 caractères minimum";
-        } 
+        // Requête pour vérifier si l'adresse e-mail existe déjà dans la base de données
+        $query = "SELECT * FROM user WHERE email = :email";
+        $statement = $pdo->prepare($query);
+        $statement->execute(['email' => $email]);
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-        if(mb_strlen($_POST($password) < 6)) {
-            $errors[] ="Erreur : mot de passe trop court, 6 caractères minimum";
+        if ($user) {
+            $errors[] = 'Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.';
         } else {
-            if($_POST($password) != $_POST($password_confirm)) {
-                $errors[] ="Erreur : mot de passe incorrect";
+            // Validation du pseudo
+            if (strlen($pseudo) < 3) {
+                $errors[] = 'Le pseudo doit contenir au moins 3 caractères.';
+            } else {
+                // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                try {
+                    // Préparation de la requête d'insertion
+                    $query = "INSERT INTO user (lastname, firstname, pseudo, genre, email, password, date_naissance) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password, :date_naissance)";
+                    $statement = $pdo->prepare($query);
+
+                    // Exécution de la requête avec les valeurs des paramètres
+                    $statement->execute([
+                        'lastname' => $lastname,
+                        'firstname' => $firstname,
+                        'pseudo' => $pseudo,
+                        'genre' => $genre,
+                        'email' => $email,
+                        'password' => $hashedPassword,
+                        'date_naissance' => $date_naissance
+                    ]);
+
+                    // Redirection vers la page home.php après l'enregistrement
+                    header("Location: home.php");
+                    exit();
+                } catch (PDOException $e) {
+                    $errors[] = 'Erreur de connexion à la base de données : ' . $e->getMessage();
+                }
             }
         }
-        // permet de vérifier si adresse email valide
-        if(!filter_var($_POST($email, FILTER_VALIDATE_EMAIL))){
-            $errors[]="Erreur : email invalide";
-         
-    } else {
-        // errreur rajoutée si il y a des erreurs
-        $errors[] = "Veuillez remplir tous les champs ";
-    } 
-      // Vérifier que le pseudo et l'adresse mail ne sont pas déja enregistrées. 
-     /* if(is_already_in_use('pseudo',$pseudo, 'user')) {
-        $errors[] = "Pseudo déja utilisé";
-    }
-    if(is_already_in_use('email',$email, 'user')) {
-        $errors[] = "Adresse mail déja utilisé";
-    } */ 
-
-    // if(count($errors) == 0) {
-        // Enregistrement de l'utilisateur si pas derreur dans le formulaire
-        
-        // Message de bienvenue
-        
-        // Redirect page Home. 
+    } catch (PDOException $e) {
+        $errors[] = 'Erreur de connexion à la base de données : ' . $e->getMessage();
     }
 }
-// }
-
 ?>
 
 <!DOCTYPE html>
 <html>
 <link rel="stylesheet" href="inscription.css">
+
 <head>
     <title>Inscription à WeTchat</title>
 </head>
+
 <body>
     <h1>Devenez membre !</h1>
-    <!-- Affichage du mesage d'erreur -->
-    <?php 
-    if (isset($error)) :
-     echo $error; 
-     endif; ?>
+    <!-- Affichage des messages d'erreur -->
+    <?php if (!empty($errors)): ?>
+        <ul>
+            <?php foreach ($errors as $error): ?>
+                <li><?php echo $error; ?></li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
 
-    <form method="POST" action="home.php">
+    <form method="POST" action="inscription.php">
+        <!-- lastname field -->
+        <label for="lastname">Nom :</label>
+        <input type="text" id="lastname" name="lastname" required><br />
 
-            <!-- lastname field -->
-            <label for="lastname">Nom :</label>
-            <input type="text" id="lastname" name="lastname" required> <br/>
+        <!-- firstname field -->
+        <label for="firstname">Prénom :</label>
+        <input type="text" id="firstname" name="firstname" required><br />
 
-            <!-- firstname field -->
-            <label for="firstname">Prénom :</label>
-            <input type="text" id="firstname" name="firstname" required> <br/>
+        <!-- pseudo field -->
+        <label for="pseudo">Pseudo :</label>
+        <input type="text" id="pseudo" name="pseudo" required><br />
 
-            <!-- pseudo field -->
-            <label for="pseudo">Pseudo :</label>
-            <input type="text" id="pseudo" name="pseudo" required> <br/>
+        <!-- genre field -->
+        <label>Genre:</label><br />
+        <input type="radio" id="Autre" name="genre" value="Autre" checked>
+        <label for="Autre">Autre</label>
+        <input type="radio" id="Femme" name="genre" value="Femme">
+        <label for="Femme">Femme</label>
+        <input type="radio" id="'Homme" name="genre" value="Homme">
+        <label for="Homme">Homme</label><br />
 
-            <!-- genre field -->
-            <label>Genre:</label><br/>
-            <input type="radio"id="Autre" name="genre"value="Autre" Checked> 
-            <label for="Autre">Autre</label>
-            <input type = "radio" id="Femme"name="genre"value="Femme"> 
-            <label for="Femme">Femme</label>
-            <input type ="radio" id ="'Homme" name="genre" value="Homme">
-            <label for="Homme">Homme</label><br/>
+        <!-- birthyear field-->
+        <label for="date_naissance">Date de naissance:</label>
+        <input type="date" name="date_naissance" id="date_naissance"><br />
 
-            <!-- email field -->
-            <label for="email">Mail :</label>
-            <input type="email" id="email" name="email" required> <br/>
+        <!-- email field -->
+        <label for="email">Mail :</label>
+        <input type="email" id="email" name="email" required><br />
 
-            <!-- password field -->
-            <label for="password">Mot de passe :</label>
-            <input type="password" id="password" name="password" required> <br/>
+        <!-- password field -->
+        <label for="password">Mot de passe :</label>
+        <input type="password" id="password" name="password" required><br />
 
-            <!-- password confirmation field -->
-            <label for="password_confirm">Confirmez votre mot de passe :</label>
-            <input type="password" id="password_confirm" name="password_confirm" required> <br/>            
+        <!-- password confirmation field -->
+        <label for="password_confirm">Confirmez votre mot de passe :</label>
+        <input type="password" id="password_confirm" name="password_confirm" required><br />
 
-            <input type="submit" class="btn btn-primary" value="Inscription" name="register">
-        </div>
+        <input type="submit" class="btn btn-primary" value="Inscription" name="register">
     </form>
     <p>Déjà inscrit ? <a href="connexion.php">Se connecter</a></p>
 </body>
+
 </html>
