@@ -19,8 +19,29 @@ if (isset($_POST['register'])) {
     $usernameDB = 'root';
     $passwordDB = 'root';
 
+    $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     try {
+        // Requête pour vérifier si l'adresse e-mail existe déjà dans la base de données
+        $query = "SELECT * FROM user WHERE email = :email";
+        $statement = $pdo->prepare($query);
+        $statement->execute(['email' => $email]);
+        $user = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($user) {
+            $errors[] = 'Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.';
+        } else {
+            
+            // Validation du pseudo
+            if (strlen($pseudo) < 3) {
+                $errors[] = 'Le pseudo doit contenir au moins 3 caractères.';
+            } else {
+                // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
+                // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            } 
+        }
+
 
         $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
