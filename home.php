@@ -18,5 +18,6 @@ session_start();
 </header>
 <body>
     <h1>BRAVO <? $_POST[$firstname] ?>  C'EST CONNECTÉ</h1>
+    <a href="new_post.php"></a><button>Ajouter un post</button>
 </body>
 </html>
