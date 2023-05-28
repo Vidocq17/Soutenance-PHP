@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// isset — Détermine si une variable est déclarée et est différente de null
 if (isset($_POST['register'])) {
     $errors = [];
 
