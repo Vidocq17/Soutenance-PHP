@@ -4,8 +4,3 @@ Une relation ManyToMany Post / Tags
 un user connecté peut : écrire des posts, écrire des commentaires
 Modifier et supprimer ses posts et commentaires
 S'il est admin, il peut tout modifier et supprimer
-
-
-Vidéo 8 pour les fonctions
-
-Voir ses tables vidéo 9 

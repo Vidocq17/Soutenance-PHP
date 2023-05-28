@@ -1,61 +1,52 @@
 <?php
 session_start();
 
-// Vérification si le formulaire a été soumis
-if (isset($_POST['submit'])) {
-    $errors = [];
+// Vérification si l'utilisateur est déjà connecté
+if (isset($_SESSION['user_id'])) {
+   header('Location: home.php');
+    exit();
+}
 
-    // Récupération des 2 données nécessaires pour le formulaire de connexion. 
+$errors = [];
+
+// Vérification si le formulaire a été soumis
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
 
-    // Connexion à la base de données avec PDO - Préciser le localhost puisque MAMP à imposé ça !
-    $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP'; 
-    $username = 'root'; 
-    $dbPassword = 'root';
+    // Connexion à la base de données avec PDO
+    $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
+    $username = 'root';
+    $passwordDB = 'root';
 
     try {
-        // Connection à la base de données
-        $pdo = new PDO($host, $username, $dbPassword);
+        $pdo = new PDO($host, $username, $passwordDB);
+        $stmt = $pdo->prepare("SELECT pseudo, password FROM user WHERE pseudo = :pseudo");
+        $stmt->execute(['pseudo' => $pseudo]);
+        $user = $stmt->fetch();
 
-        // Requête de bdd
-        $query = "SELECT pseudo, password FROM user WHERE pseudo = :pseudo";
-        $statement = $pdo->prepare($query);
-        $statement->execute(['pseudo' => $pseudo]);
-        $user = $statement->fetch(PDO::FETCH_ASSOC);
-
-        if ($user) {
-            // Vérification du pseudo
-            if ($user['pseudo'] === $pseudo) {
-                // Vérification du mot de passe
-                if (password_verify($password, $user['password'])) {
-                    // Les informations de connexion sont correctes
-                    echo "Connexion réussie!";
-                    $_SESSION['user_id'] = $user['user_id']; // Enregistrement de l'ID de l'utilisateur dans la session
-                    header('Location: home.php');
-                } else {
-                    // Le mot de passe est incorrect
-                    $errors[] = "Mot de passe incorrect.";
-                }
-            } else {
-                // Le pseudo est incorrect
-                $errors[] = "Pseudo incorrect.";
-            }
+        if ($user && password_verify($password, $user['password'])) {
+            // Les informations de connexion sont correctes
+            $_SESSION['user_id'] = $user['user_id']; // Enregistrement de l'ID de l'utilisateur dans la session
+            header('Location: home.php');
+            exit();
         } else {
-            // Utilisateur non trouvé dans la base de données
-            $errors[] = "Utilisateur non trouvé.";
+            // Le pseudo ou le mot de passe est incorrect
+            $errors[] = "Pseudo ou mot de passe incorrect.";
         }
     } catch (PDOException $e) {
-        // Erreur de connexion à la base de données
-        echo "Erreur de connexion à la base de données : " . $e->getMessage();
+        echo "Erreur lors de la vérification des informations de connexion : " . $e->getMessage();
     }
-    
-      // Stockage des erreurs dans la session
-      $_SESSION['errors'] = $errors;
-      header('Location: connexion.php');
-      exit();
 }
+
+// Stockage des erreurs dans la session
+$_SESSION['errors'] = $errors;
+header('Location: connexion.php');
+exit();
 ?>
+
+
+
 
 
 
