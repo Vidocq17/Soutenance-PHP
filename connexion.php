@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
     </form>
     <p>Pas encore inscrit ? <a href="inscription.php">S'inscrire</a></p>
+    <a href="index.php">Page d'accueil</a>
 </body>
 </html>
 
