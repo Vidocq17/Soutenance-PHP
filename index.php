@@ -1,39 +1,39 @@
 <html>
     <style>
-body{
-    display: flex;
-    align-items: center;
-    flex-direction: column;
-    gap: 5%;
-    margin: 0;
-    padding: 0;
-}
+        body{
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            gap: 5%;
+            margin: 0;
+            padding: 0;
+        }
 
-.title h1 {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 50px;
-}
+        .title h1 {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+        }
 
-p {
-    font-size: 18px;
-    margin-left: 20%;
-    margin-right: 20%;
-}
+        p {
+            font-size: 18px;
+            margin-left: 20%;
+            margin-right: 20%;
+        }
 
-a {
-    font-size: 20px;
-}
+        a {
+            font-size: 20px;
+        }
 
-.right-panel button {
-    background-color: black;
-    color: white;
-    border-radius: 20px;
-    margin: 0 50px;
-    height: auto;
-    width: 200px;
-}
+        .right-panel button {
+            background-color: black;
+            color: white;
+            border-radius: 20px;
+            margin: 0 50px;
+            height: auto;
+            width: 200px;
+        }
     </style>
 <body>
         <div class="title">

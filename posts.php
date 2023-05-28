@@ -21,6 +21,18 @@ $statement = $pdo->prepare($query);
 $statement->bindValue(':user_id', $user_id);
 $statement->execute();
 $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+// Récupérer le prénom de l'utilisateur depuis la bdd
+$query = "SELECT firstname FROM user WHERE user_id = :user_id";
+$statement = $pdo->prepare($query);
+$statement->bindParam(':user_id', $user_id);
+$statement->execute();
+$user = $statement->fetch(PDO::FETCH_ASSOC);
+$firstname = $user['firstname'];
+
+// Attribution du prénom à la variable de session
+$_SESSION['firstname'] = $firstname;
+$user_id = $_SESSION['user_id'];
 ?>
 
 <!DOCTYPE html>
@@ -117,8 +129,11 @@ $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
     </header>
 
     <div class="container">
-        <h1>Mes posts</h1>
+        <h1>Posts de <?php echo isset($_GET['firstname']) ? $_GET['firstname'] : $firstname ?> </h1>
         <a href="new_post.php"><button>Ajouter un post</button></a>
+        <a href="edit_post.php"><button>Modifier un post</button></a>
+        <a href="remove_post.php?post_id=<?php echo $post['post_id']; ?>"><button> Supprimer un post </button></a>
+
         <?php foreach ($posts as $post) { ?>
             <div class="post">
                 <h2><?php echo $post['title']; ?></h2>

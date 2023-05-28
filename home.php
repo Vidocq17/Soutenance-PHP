@@ -1,25 +1,39 @@
 <?php
+// démarrer la session d'utilisateur
 session_start();
+
 
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
-    // Redirection vers la page de connexion ou affichage d'un message d'erreur
+    // Redirection vers la page de connexion si pas connecté
     header('Location: inscription.php');
     exit();
 }
-
+// 2léments de connection à la bdd
 $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
 $usernameDB = 'root';
 $passwordDB = 'root';
-
+// Requète de connection à la bdd
 $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Récupérer les posts depuis la base de données 
+// Récupérer les posts depuis la bdd
 $query = "SELECT * FROM post";
 $statement = $pdo->prepare($query);
 $statement->execute();
 $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+// Récupérer le prénom de l'utilisateur depuis la bdd
+$user_id = $_SESSION['user_id'];
+$query = "SELECT firstname FROM user WHERE user_id = :user_id";
+$statement = $pdo->prepare($query);
+$statement->bindParam(':user_id', $user_id);
+$statement->execute();
+$user = $statement->fetch(PDO::FETCH_ASSOC);
+$firstname = $user['firstname'];
+
+// Attribution du prénom à la variable de session
+$_SESSION['firstname'] = $firstname;
 ?>
 
 <!DOCTYPE html>
@@ -124,11 +138,11 @@ $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
         <li>Paramètres</li>
     </ul>
     <ul class="logout">
-        <li>Se déconnecter</li>
+       <a href="inscription.php"> <li>Se déconnecter</li></a>
     </ul>
 </header>
 <div class="container">
-<h1>BRAVO <?php echo isset($_GET['firstname']) ? $_GET['firstname'] : 'intrus' ?>, TU ES CONNECTÉ</h1>
+    <h1>Bienvenue <?php echo isset($_GET['firstname']) ? $_GET['firstname'] : $firstname ?>, </h1>
     <a href="new_post.php"><button>Ajouter un post</button></a>
 </div>
 <div class="posts">
@@ -142,7 +156,7 @@ $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
             <h2><?php echo $title; ?></h2>
             <p><?php echo $content; ?></p>
             <div class="meta">
-                <span>Posté par utilisateur <?php echo $user_id; ?></span>
+            <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
             </div>
            <a href="new_comment.php"> <button>Commenter</button> </a>
         </div>
