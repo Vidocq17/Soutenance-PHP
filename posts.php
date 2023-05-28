@@ -127,6 +127,10 @@ $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
                     <span>Posté par utilisateur <?php echo $post['user_id']; ?></span>
                 </div>
             </div>
+            <div class="btn">
+                <a href="edit_post.php"><button>Modifier le post</button></a>
+                <a href="remove_post.php"><button>Supprimer le post</button></a>
+            </div>
         <?php } ?>
     </div>
 </body>
