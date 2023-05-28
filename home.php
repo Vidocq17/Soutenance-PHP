@@ -144,7 +144,7 @@ $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
             <div class="meta">
                 <span>Posté par utilisateur <?php echo $user_id; ?></span>
             </div>
-            <button>Commenter</button>
+           <a href="new_comment.php"> <button>Commenter</button> </a>
         </div>
     <?php } ?>
 </div>
