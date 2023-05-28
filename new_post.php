@@ -40,36 +40,96 @@ if (!isset($_SESSION['user_id'])) {
 }
 ?>
 
-<!DOCTYPE html>
 <html>
 <head>
     <title>Nouveau post</title>
+    <!DOCTYPE html>
+<html>
+<head>
+    <title>Nouveau post</title>
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+            margin-top: 20vh;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group input[type="file"] {
+            width: 100%;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        .form-group input[type="file"] {
+            cursor: pointer;
+        }
+
+        .form-group button[type="submit"],
+        .form-group a.button {
+            padding: 8px 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group a.button {
+            background-color: #ccc;
+            margin-left: 10px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Nouveau post</h1>
-    <form method="POST" action="new_post.php">
-        <div>
-            <label for="title">Titre du post : </label>
-            <input type="text" name="title" id ="title">
-        </div>
-        <div>
-            <label for="content">Contenu du post :</label>
-            <textarea id="content" name="content" required></textarea>
-        </div>
-        <div>
-            <label for="image">Image :</label>
-            <input type="file" id="image" name="image">
-        </div>
-        <div>
-            <label for="tags">Tags :</label>
-            <input type="text" id="tags" name="tags">
-        </div>
-        <div>
-            <button type="submit">Publier</button>
-        </div>
-    </form>
+    <div class="container">
+        <h1>Nouveau post</h1>
+        <form method="POST" action="new_post.php">
+            <div class="form-group">
+                <label for="title">Titre du post :</label>
+                <input type="text" name="title" id="title">
+            </div>
+            <div class="form-group">
+                <label for="content">Contenu du post :</label>
+                <textarea id="content" name="content" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="image">Image :</label>
+                <input type="file" id="image" name="image">
+            </div>
+            <div class="form-group">
+                <label for="tags">Tags :</label>
+                <input type="text" id="tags" name="tags">
+            </div>
+            <div class="form-group">
+                <button type="submit">Publier</button>
+                <a href="home.php" class="button">Accueil</a>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
+
 <!--
 INSERT INTO 
 SELECT * FROM POST where user.id=?
