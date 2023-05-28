@@ -52,33 +52,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!DOCTYPE html>
 <html>
 <style>
-    body {
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1;
+}
+
+.container {
+    max-width: 400px;
+    margin: 20vh auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+form input[type="text"],
+form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+form button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.error {
+    color: red;
+    margin-bottom: 10px;
+}
+
+a {
+    color: black;
+    text-decoration: none;
+}
+.links a {
     display: flex;
-    align-items: center;
+    justify-content: center;
     flex-direction: row;
-    margin-top: 20vh;
-    gap: 5%;
+}
+.links a:hover {
+    color: red;
 }
 
-header {
-    margin-left: 15%;
-    width: 30%;
-}
-
-content{
-    display: flex;
-    flex-direction: column;
-}
-
-input[type="text"]{
-    width: 200px;
-}
 </style>
 
 <head>
     <title>Connexion</title>
 </head>
 <body>
+    <div class="container">
     <h1>Connexion</h1>
     <?php if (isset($error)): ?>
         <div><?php echo $error; ?></div>
@@ -96,8 +146,11 @@ input[type="text"]{
             <button type="submit">Se connecter</button>
         </div>
     </form>
-    <p>Pas encore inscrit ? <a href="inscription.php">S'inscrire</a></p>
+    <div class="links">
+    <a href="inscription.php">S'inscrire</a>
     <a href="index.php">Page d'accueil</a>
+    </div>
+    </div>
 </body>
 </html>
 
