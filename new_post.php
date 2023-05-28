@@ -9,7 +9,7 @@ $user_id = $_SESSION['user_id'];
         // Attribution des $
     $title =  $_POST['title'];
     $content =  $_POST['content'];
-    // $user_id = '32';
+     $user_id = $_POST['user_id'];
 // Code d'accès à la bdd
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $usernameDB = 'root';
@@ -18,7 +18,7 @@ $user_id = $_SESSION['user_id'];
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 // requète d'insertion dans la table SQL
-    $query = "INSERT INTO post (title,content) VALUES (:title, :content)";
+    $query = "INSERT INTO post (title,content, user_id) VALUES (:title, :content, :user_id) WHERE user_id = ?";
 
     try {
         $statement = $pdo->prepare($query);

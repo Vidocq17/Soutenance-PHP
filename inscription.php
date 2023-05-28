@@ -9,6 +9,7 @@ if (isset($_POST['register'])) {
     $lastname = $_POST['lastname'];
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
+    $password_confirm = $_POST['password_confirm'];
     $gender = $_POST['genre'];
     //$date_naissance = $_POST['date_naissance'];
     $email = $_POST['email'];
@@ -34,6 +35,11 @@ if (isset($_POST['register'])) {
             if (strlen($pseudo) < 3) {
                 $errors[] = 'Le pseudo doit contenir au moins 3 caractères.';
             } else {
+                if ($password === $password_confirm) {
+                } else {
+                    $errors[] = "Les mots de passe sont différents";
+                    
+                }
                 // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
                 $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password)";
                 $statement = $pdo->prepare($query);
@@ -59,7 +65,6 @@ if (isset($_POST['register'])) {
 ?>
 
 
-?>
 
 <!DOCTYPE html>
 <html>
