@@ -35,7 +35,7 @@ if (isset($_POST['register'])) {
             // Validation du pseudo
             if (strlen($pseudo) < 3) {
                 $errors[] = 'Le pseudo doit contenir au moins 3 caractères.';
-            } else {
+            } else {   
                 if ($password === $password_confirm) {
                     // Hachage du mot de passe
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
