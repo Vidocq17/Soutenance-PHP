@@ -1,5 +1,4 @@
 <?php
-
 session_start();
 
 if (isset($_POST['register'])) {
@@ -13,7 +12,6 @@ if (isset($_POST['register'])) {
     $gender = $_POST['genre'];
     //$date_naissance = $_POST['date_naissance'];
     $email = $_POST['email'];
-
 
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $usernameDB = 'root';
@@ -32,40 +30,34 @@ if (isset($_POST['register'])) {
         if ($user) {
             $errors[] = 'Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.';
         } else {
-            
             // Validation du pseudo
             if (strlen($pseudo) < 3) {
                 $errors[] = 'Le pseudo doit contenir au moins 3 caractères.';
             } else {
                 // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
-                // $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password)";
+                $statement = $pdo->prepare($query);
+
+                $statement->execute([
+                    'firstname' => $firstname,
+                    'lastname' => $lastname,
+                    'pseudo' => $pseudo,
+                    'password' => $password,
+                    'genre' => $gender,
+                    'email' => $email 
+                ]); 
+
+                // Redirection vers la page home.php après l'enregistrement
+                header("Location: home.php");
+                exit();
             } 
         }
-
-
-        $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password /* date_naissance */ ) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password /*:date_naissance) */ )";
-        $statement = $pdo->prepare($query);
-
-        $statement->execute([
-            'firstname' => $firstname,
-            'lastname' => $lastname,
-            'pseudo' => $pseudo,
-            'password' => $password,
-            'genre' => $gender,
-          //  'date_naissance' => $date_naissance,
-            'email' => $email 
-        ]); 
-
-        // Redirection vers la page home.php après l'enregistrement
-        header("Location: home.php");
-        exit();
     } catch (PDOException $e) {
         $errors[] = 'Erreur de connexion à la base de données : ' . $e->getMessage();
     }
 }
+?>
+
 
 ?>
 
@@ -129,6 +121,7 @@ if (isset($_POST['register'])) {
         <input type="submit" class="btn btn-primary" value="Inscription" name="register">
     </form>
     <p>Déjà inscrit ? <a href="connexion.php">Se connecter</a></p>
+    <a href="index.php">Page d'accueil</a>
 </body>
 
 </html>
