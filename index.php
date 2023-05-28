@@ -1,5 +1,40 @@
 <html>
-    <link rel="stylesheet" href="index.css">
+    <style>
+body{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 5%;
+    margin: 0;
+    padding: 0;
+}
+
+.title h1 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 50px;
+}
+
+p {
+    font-size: 18px;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+a {
+    font-size: 20px;
+}
+
+.right-panel button {
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    margin: 0 50px;
+    height: auto;
+    width: 200px;
+}
+    </style>
 <body>
         <div class="title">
             <h1>Bienvenue sur WeTchat !</h1>
@@ -19,7 +54,6 @@
 <div class="right-panel">
     <a href="inscription.php"><button class="btn"> je m'inscris</button></a>
     <a href="connexion.php"><button class="btn"> je me connecte</button></a>
-    <a href="aboutus.php"><button class="btn"> A propos de nous</button></a>
 </div>
 </body>
 </html>
