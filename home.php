@@ -119,8 +119,8 @@ $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
 <header>
     <ul>
         <li><a href="home.php">Accueil</a></li>
-        <li><a href="my_posts">Posts</a></li>
-        <li><a href="my_comments">Commentaires</a></li>
+        <li><a href="posts.php">Posts</a></li>
+        <li><a href="comments.php">Commentaires</a></li>
         <li>Paramètres</li>
     </ul>
     <ul class="logout">

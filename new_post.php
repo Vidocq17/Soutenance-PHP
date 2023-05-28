@@ -124,6 +124,7 @@ if (!isset($_SESSION['user_id'])) {
             <div class="form-group">
                 <button type="submit">Publier</button>
                 <a href="home.php" class="button">Accueil</a>
+                <a href="posts.php" class="button">mes posts</a>
             </div>
         </form>
     </div>
