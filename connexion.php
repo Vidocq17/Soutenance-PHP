@@ -51,6 +51,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html>
+<style>
+    body {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-top: 20vh;
+    gap: 5%;
+}
+
+header {
+    margin-left: 15%;
+    width: 30%;
+}
+
+content{
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="text"]{
+    width: 200px;
+}
+</style>
+
 <head>
     <title>Connexion</title>
 </head>

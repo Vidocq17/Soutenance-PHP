@@ -69,7 +69,20 @@ if (isset($_POST['register'])) {
 
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="inscription.css">
+<style>
+    body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20vh;
+}
+
+input{
+    width: 200px;
+}
+
+</style>
 
 <head>
     <title>Inscription à WeTchat</title>

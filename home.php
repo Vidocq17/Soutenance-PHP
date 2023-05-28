@@ -4,9 +4,24 @@ session_start();
 ?>
 <!DOCTYPE html>
 <html>
-    <link rel="stylesheet" href="home.css">
+    <style>
+header {
+display: flex;
+flex-direction: row;
+}
+
+header ul {
+    display: flex;
+    align-items: center;
+}
+
+header ul li {
+    margin-left: 50px;
+    color: green;
+}
+    </style>
 <head>
-    <title class="home_title">Accueil</title>
+    <title>Accueil</title>
 </head>
 <header>
     <ul>
