@@ -1,99 +1,113 @@
 <?php
 session_start();
+// Vérification si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    // Redirection vers la page de connexion ou affichage d'un message d'erreur
+   header('Location: inscription.php');
+    exit();
+    $firstname = $_POST['firstname'];
+    $title =  $_POST['title'];
+    $content =  $_POST['content'];
 
+    $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
+    $usernameDB = 'root';
+    $passwordDB = 'root';
 
+    $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+}
 ?>
 <!DOCTYPE html>
 <html>
     <style>
-header {
-    background-color: #333;
-    color: #fff;
-    padding: 20px;
-}
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+        }
 
-header ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
+        header ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
 
-header ul li {
-    display: inline-block;
-    margin-right: 10px;
-}
+        header ul li {
+            display: inline-block;
+            margin-right: 10px;
+        }
 
-header ul li:last-child {
-    margin-right: 0;
-}
+        header ul li:last-child {
+            margin-right: 0;
+        }
 
-header ul li a {
-    color: white;
-    text-decoration: none;
-}
+        header ul li a {
+            color: white;
+            text-decoration: none;
+        }
 
-header ul li a:hover {
-    text-decoration: underline;
-}
+        header ul li a:hover {
+            text-decoration: underline;
+        }
 
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f1f1f1;
-}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+        }
 
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-.post {
-    margin-bottom: 20px;
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
+        .post {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
 
-.post h2 {
-    margin-bottom: 10px;
-}
+        .post h2 {
+            margin-bottom: 10px;
+        }
 
-.post p {
-    margin-bottom: 10px;
-}
+        .post p {
+            margin-bottom: 10px;
+        }
 
-.post .meta {
-    font-size: 12px;
-    color: #666;
-}
+        .post .meta {
+            font-size: 12px;
+            color: #666;
+        }
 
-.post .meta span {
-    margin-right: 10px;
-}
+        .post .meta span {
+            margin-right: 10px;
+        }
 
-.logout {
-    text-align: right;
-}
+        .logout {
+            text-align: right;
+        }
 
-.logout a {
-    color: #666;
-    text-decoration: none;
-}
+        .logout a {
+            color: #666;
+            text-decoration: none;
+        }
 
-.logout a:hover {
-    text-decoration: underline;
-}
+        .logout a:hover {
+            text-decoration: underline;
+        }
 
-    </style>
+            </style>
 <head>
     <title>Accueil</title>
 </head>
@@ -110,7 +124,7 @@ h1 {
 </header>
 <body>
     <div class="container">
-    <h1>BRAVO <? $_POST[$firstname] ?>  C'EST CONNECTÉ</h1>
+    <h1>BRAVO <?php echo isset($_GET['firstname']) ? $_GET['firstname'] : 'connard' ?>, TU ES CONNECTÉ</h1>
     <a href="new_post.php"><button>Ajouter un post</button></a>
     </div>
 </body>

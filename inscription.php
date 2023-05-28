@@ -54,7 +54,7 @@ if (isset($_POST['register'])) {
                     $_SESSION['user_id'] = $pdo->lastInsertId();
 
                     // Redirection vers la page home.php après l'enregistrement
-                    header("Location: home.php");
+                    header("Location: home.php?firstname=$firstname");
                     exit();
                 } else {
                     $errors[] = "Les mots de passe sont différents";
@@ -71,75 +71,76 @@ if (isset($_POST['register'])) {
 
 <!DOCTYPE html>
 <html>
-<style>body {
-    font-family: Arial, sans-serif;
-    background-color: #f1f1f1;
-}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f1f1f1;
+    }
 
-.container {
-    max-width: 400px;
-    margin: 5vh auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-}
+    .container {
+        max-width: 400px;
+        margin: 5vh auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
 
-h1 {
-    text-align: center;
-    margin-bottom: 20px;
-}
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
 
-form {
-    margin-bottom: 20px;
-}
+    form {
+        margin-bottom: 20px;
+    }
 
-form label {
-    display: block;
-    margin-bottom: 10px;
-}
+    form label {
+        display: block;
+        margin-bottom: 10px;
+    }
 
-form input[type="text"],
-form input[type="password"],
-form textarea {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
-    margin-bottom: 10px;
-}
+    form input[type="text"],
+    form input[type="password"],
+    form textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        margin-bottom: 10px;
+    }
 
-form button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
+    form button[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
 
-form button[type="submit"]:hover {
-    background-color: #45a049;
-}
+    form button[type="submit"]:hover {
+        background-color: #45a049;
+    }
 
-.error {
-    color: red;
-    margin-bottom: 10px;
-}
-a {
-    color: black;
-    text-decoration: none;
-}
-.links a {
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-}
-.links a:hover {
-    color: red;
-}
+    .error {
+        color: red;
+        margin-bottom: 10px;
+    }
+    a {
+        color: black;
+        text-decoration: none;
+    }
+    .links a {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+    }
+    .links a:hover {
+        color: red;
+    }
 
 </style>
 
