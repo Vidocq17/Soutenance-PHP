@@ -1,24 +1,30 @@
 <?php
 session_start();
+
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     // Redirection vers la page de connexion ou affichage d'un message d'erreur
-   header('Location: inscription.php');
+    header('Location: inscription.php');
     exit();
-    $firstname = $_POST['firstname'];
-    $title =  $_POST['title'];
-    $content =  $_POST['content'];
-
-    $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
-    $usernameDB = 'root';
-    $passwordDB = 'root';
-
-    $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 }
+
+$host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
+$usernameDB = 'root';
+$passwordDB = 'root';
+
+$pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
+$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+// Récupérer les posts depuis la base de données 
+$query = "SELECT * FROM post";
+$statement = $pdo->prepare($query);
+$statement->execute();
+$posts = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
+
 <!DOCTYPE html>
 <html>
+<head>
     <style>
         header {
             background-color: #333;
@@ -106,26 +112,41 @@ if (!isset($_SESSION['user_id'])) {
         .logout a:hover {
             text-decoration: underline;
         }
-
-            </style>
-<head>
+    </style>
     <title>Accueil</title>
 </head>
+<body>
 <header>
     <ul>
-        <a href="home.php"> <li>Accueil</li> </a>
-        <a href="my_posts"> <li>Posts</li></a>
-        <a href="my_comments"><li>Commentaires</li></a>
+        <li><a href="home.php">Accueil</a></li>
+        <li><a href="my_posts">Posts</a></li>
+        <li><a href="my_comments">Commentaires</a></li>
         <li>Paramètres</li>
     </ul>
     <ul class="logout">
         <li>Se déconnecter</li>
     </ul>
 </header>
-<body>
-    <div class="container">
-    <h1>BRAVO <?php echo isset($_GET['firstname']) ? $_GET['firstname'] : 'connard' ?>, TU ES CONNECTÉ</h1>
+<div class="container">
+<h1>BRAVO <?php echo isset($_GET['firstname']) ? $_GET['firstname'] : 'intrus' ?>, TU ES CONNECTÉ</h1>
     <a href="new_post.php"><button>Ajouter un post</button></a>
-    </div>
+</div>
+<div class="posts">
+    <?php foreach ($posts as $post) {
+        $postId = $post['post_id'];
+        $title = $post['title'];
+        $content = $post['content'];
+        $user_id = $post['user_id'];
+        ?>
+        <div class="post">
+            <h2><?php echo $title; ?></h2>
+            <p><?php echo $content; ?></p>
+            <div class="meta">
+                <span>Posté par utilisateur <?php echo $user_id; ?></span>
+            </div>
+            <button>Commenter</button>
+        </div>
+    <?php } ?>
+</div>
 </body>
 </html>
