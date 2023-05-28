@@ -21,7 +21,7 @@ if (isset($_POST['register'])) {
 
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+
     try {
         // Requête pour vérifier si l'adresse e-mail existe déjà dans la base de données
         $query = "SELECT * FROM user WHERE email = :email";
@@ -37,28 +37,29 @@ if (isset($_POST['register'])) {
                 $errors[] = 'Le pseudo doit contenir au moins 3 caractères.';
             } else {
                 if ($password === $password_confirm) {
+                    // Hachage du mot de passe
+                    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                    // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
+                    $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password)";
+                    $statement = $pdo->prepare($query);
+
+                    $statement->execute([
+                        'firstname' => $firstname,
+                        'lastname' => $lastname,
+                        'pseudo' => $pseudo,
+                        'password' => $hashedPassword,  // Utilisez le mot de passe haché
+                        'genre' => $gender,
+                        'email' => $email 
+                    ]);         
+                    $_SESSION['user_id'] = $pdo->lastInsertId();
+
+                    // Redirection vers la page home.php après l'enregistrement
+                    header("Location: home.php");
+                    exit();
                 } else {
                     $errors[] = "Les mots de passe sont différents";
-                } 
-                // Hachage du mot de passe
-                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
-                $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password)";
-                $statement = $pdo->prepare($query);
-
-                $statement->execute([
-                    'firstname' => $firstname,
-                    'lastname' => $lastname,
-                    'pseudo' => $pseudo,
-                    'password' => $password,
-                    'genre' => $gender,
-                    'email' => $email 
-                ]); 
-
-                // Redirection vers la page home.php après l'enregistrement
-                header("Location: home.php");
-                exit();
-            } 
+                }
+            }
         }
     } catch (PDOException $e) {
         $errors[] = 'Erreur de connexion à la base de données : ' . $e->getMessage();

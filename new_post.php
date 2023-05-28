@@ -2,10 +2,19 @@
 
 session_start();
 
-// $user_id = $_SESSION['user_id'];
+// Vérification si l'utilisateur est connecté
+if (!isset($_SESSION['user_id'])) {
+    // Redirection vers la page de connexion ou affichage d'un message d'erreur
+   header('Location: inscription.php');
+    exit();
+}
+
+// Récupération de l'ID de l'utilisateur connecté
+    $userId = $_SESSION['user_id'];
+
 
 // récupération des valeurs dans le formulaire : 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
         // Attribution des $
     $title =  $_POST['title'];
     $content =  $_POST['content'];
@@ -18,16 +27,12 @@ session_start();
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 // requète d'insertion dans la table SQL
-    $query = "INSERT INTO post (title,content/*, user_id*/ ) VALUES (:title, :content/*, :user_id*/ ) WHERE user_id = ?";
+    $query = ("INSERT INTO Post (title, content, userId) VALUES (?, ?, ?)");
 
     try {
         $statement = $pdo->prepare($query);
-        $statement->execute([
-            // Identification des variables dans le formulaire
-            'title' => $title,
-            'content' => $content,
-          //  'user_id' => $user_id,
-        ]);
+        // Identification des variables dans le formulaire
+        $statement->execute([$user_id, $title,$content,]);
         
         echo "Nouveau post enregistré";
     } catch (PDOException $e) {
