@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+// isset — Détermine si une variable est déclarée et est différente de null
 if (isset($_POST['register'])) {
     $errors = [];
 
@@ -38,8 +39,9 @@ if (isset($_POST['register'])) {
                 if ($password === $password_confirm) {
                 } else {
                     $errors[] = "Les mots de passe sont différents";
-                    
-                }
+                } 
+                // Hachage du mot de passe
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
                 $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password)";
                 $statement = $pdo->prepare($query);
@@ -68,13 +70,84 @@ if (isset($_POST['register'])) {
 
 <!DOCTYPE html>
 <html>
-<link rel="stylesheet" href="inscription.css">
+<style>body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1;
+}
+
+.container {
+    max-width: 400px;
+    margin: 5vh auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+form {
+    margin-bottom: 20px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+form input[type="text"],
+form input[type="password"],
+form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+
+form button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.error {
+    color: red;
+    margin-bottom: 10px;
+}
+a {
+    color: black;
+    text-decoration: none;
+}
+.links a {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+}
+.links a:hover {
+    color: red;
+}
+
+</style>
 
 <head>
     <title>Inscription à WeTchat</title>
 </head>
 
 <body>
+    <div class="container">
     <h1>Devenez membre !</h1>
     <!-- Affichage des messages d'erreur -->
     <?php if (!empty($errors)): ?>
@@ -99,7 +172,7 @@ if (isset($_POST['register'])) {
         <input type="text" id="pseudo" name="pseudo" required><br />
 
         <!-- gender field -->
-        <label>Genre:</label><br />
+        <label>Genre:</label>
         <input type="radio" id="Autre" name="genre" value="A" checked>
         <label for="Autre">Autre</label>
         <input type="radio" id="Femme" name="genre" value="F">
@@ -125,8 +198,11 @@ if (isset($_POST['register'])) {
 
         <input type="submit" class="btn btn-primary" value="Inscription" name="register">
     </form>
-    <p>Déjà inscrit ? <a href="connexion.php">Se connecter</a></p>
+    <div class="links">
+    <a href="connexion.php">Déjà inscrit ?</a>
     <a href="index.php">Page d'accueil</a>
+    </div>
+    </div>
 </body>
 
 </html>
