@@ -12,13 +12,12 @@ if (!isset($_SESSION['user_id'])) {
 // Récupération de l'ID de l'utilisateur connecté
     $userId = $_SESSION['user_id'];
 
-
 // récupération des valeurs dans le formulaire : 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create'])) {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Attribution des $
     $title =  $_POST['title'];
     $content =  $_POST['content'];
-   // $user_id = $_POST['user_id'];
+    $user_id = $_SESSION['user_id'];
 // Code d'accès à la bdd
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $usernameDB = 'root';
@@ -27,12 +26,12 @@ if (!isset($_SESSION['user_id'])) {
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 // requète d'insertion dans la table SQL
-    $query = ("INSERT INTO Post (title, content, userId) VALUES (?, ?, ?)");
+    $query = ("INSERT INTO post (title, content, user_id) VALUES (?, ?, ?)");
 
     try {
         $statement = $pdo->prepare($query);
         // Identification des variables dans le formulaire
-        $statement->execute([$user_id, $title,$content,]);
+        $statement->execute([$title,$content,$user_id]);
         
         echo "Nouveau post enregistré";
     } catch (PDOException $e) {
