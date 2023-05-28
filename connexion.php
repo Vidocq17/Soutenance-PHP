@@ -18,31 +18,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo = new PDO($host, $username, $dbPassword);
 
         // Requête de bdd
-        $query = "SELECT pseudo  FROM user WHERE pseudo = :pseudo";
+        $query = "SELECT pseudo, password FROM user WHERE pseudo = :pseudo";
         $statement = $pdo->prepare($query);
         $statement->execute(['pseudo' => $pseudo]);
         $user = $statement->fetch(PDO::FETCH_ASSOC);
 
-         if ($user) {
-        // Vérification du mot de passe
-        if (password_verify($password, $user['password'])) {
-            // Les informations de connexion sont correctes
-            // Faites ici les actions appropriées (ex: connexion de l'utilisateur, redirection vers une page, etc.)
-            echo "Connexion réussie!";
-        } else {
-            // Le mot de passe est incorrect
-            echo "Mot de passe incorrect.";
+        if ($user) {
+            // Vérification du pseudo
+            if ($user['pseudo'] === $pseudo) {
+                // Vérification du mot de passe
+                if (password_verify($password, $user['password'])) {
+                    // Les informations de connexion sont correctes
+                    echo "Connexion réussie!";
+                    header('Location: home.php');
+                } else {
+                    // Le mot de passe est incorrect
+                    echo "Mot de passe incorrect.";
+                }
+            } else {
+                // Le pseudo est incorrect
+                echo "Pseudo incorrect.";
+            }
         }
-    } else {
-        // L'utilisateur avec le pseudo donné n'existe pas
-        echo "Pseudo incorrect.";
+    } catch (PDOException $e) {
+        // Erreur de connexion à la base de données
+        echo "Erreur de connexion à la base de données : " . $e->getMessage();
     }
-} catch (PDOException $e) {
-    // Erreur de connexion à la base de données
-    echo "Erreur de connexion à la base de données : " . $e->getMessage();
-}
 }
 ?>
+
+
 
 <!DOCTYPE html>
 <html>

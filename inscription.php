@@ -38,8 +38,9 @@ if (isset($_POST['register'])) {
                 if ($password === $password_confirm) {
                 } else {
                     $errors[] = "Les mots de passe sont différents";
-                    
-                }
+                } 
+                // Hachage du mot de passe
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                 // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
                 $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password)";
                 $statement = $pdo->prepare($query);
