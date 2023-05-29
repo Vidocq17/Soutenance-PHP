@@ -142,8 +142,9 @@ $_SESSION['firstname'] = $firstname;
                 </div>
             </div>
             <div class="btn">
+                <!-- Préciser l'id du post, pas idéal mais j'ai rien trouvé de mieux pour l'instant -->
             <a href="edit_post.php?post_id=<?php echo $post['post_id']; ?>"><button>Modifier le post</button></a>
-                <a href="remove_post.php?post_id=<?php echo $post['post_id']; ?>"><button>Supprimer le post</button></a>
+            <a href="remove_post.php?post_id=<?php echo $post['post_id']; ?>"><button>Supprimer le post</button></a>
             </div>
         <?php } ?>
     </div>

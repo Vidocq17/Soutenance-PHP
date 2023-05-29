@@ -9,11 +9,13 @@ if (!isset($_SESSION['user_id'])) {
 
 // Vérification si un post_id a été passé en paramètre
 if (!isset($_GET['post_id'])) {
-
     // Redirection vers la page de gestion des posts ou affichage d'un message d'erreur
     echo "Vous n'avez pas encore de post";
     exit();
 }
+
+// Récupération du post_id depuis les paramètres de l'URL
+$post_id = $_GET['post_id'];
 
 // Connexion à la base de données
 $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
@@ -27,7 +29,6 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 $user_id = $_SESSION['user_id'];
 
 // Vérification si le post appartient à l'utilisateur connecté
-$post_id = $_POST['post_id'];
 $query = "SELECT * FROM post WHERE post_id = :post_id AND user_id = :user_id";
 $statement = $pdo->prepare($query);
 $statement->bindValue(':post_id', $post_id);
@@ -38,7 +39,7 @@ $post = $statement->fetch(PDO::FETCH_ASSOC);
 
 if (!$post) {
     // Redirection vers la page de gestion des posts ou affichage d'un message d'erreur
-    header('Location: posts.php');
+    echo "Vous n'avez pas de post à supprimer";
     exit();
 }
 
