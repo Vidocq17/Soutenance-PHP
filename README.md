@@ -55,4 +55,4 @@ Contact
 Si vous avez des questions ou des suggestions concernant WeTchat, n'hésitez pas à nous contacter.
 
 Liens
-Lien GitHub : https://github.com/Vidocq17/Soutenance-PHP.git (branche "main")     
+Lien GitHub : https://github.com/Vidocq17/Soutenance-PHP.git (branche "avidan")     
