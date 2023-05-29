@@ -138,7 +138,7 @@ $_SESSION['firstname'] = $firstname;
         <li>Paramètres</li>
     </ul>
     <ul class="logout">
-       <a href="inscription.php"> <li>Se déconnecter</li></a>
+       <a href="Compte/inscription.php"> <li>Se déconnecter</li></a>
     </ul>
 </header>
 <div class="container">
@@ -158,7 +158,7 @@ $_SESSION['firstname'] = $firstname;
             <div class="meta">
             <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
             </div>
-           <a href="new_comment.php"> <button>Commenter</button> </a>
+           <a href="comment.php"> <button>Commenter</button> </a>
         </div>
     <?php } ?>
 </div>

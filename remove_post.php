@@ -104,7 +104,7 @@ $statement->execute();
             Le post a été supprimé avec succès.
         </div>
         <div class="button-container">
-            <a href="my_posts.php">Retour à mes posts</a>
+            <a href="posts.php">Retour à mes posts</a>
         </div>
     </div>
 </body>

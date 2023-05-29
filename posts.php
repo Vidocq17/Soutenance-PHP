@@ -3,7 +3,7 @@ session_start();
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     // Redirection vers la page de connexion ou affichage d'un message d'erreur
-    header('Location: inscription.php');
+    header('Location: Pages/inscription.php');
     exit();
 }
 // Connexion à la base de données
@@ -32,7 +32,6 @@ $firstname = $user['firstname'];
 
 // Attribution du prénom à la variable de session
 $_SESSION['firstname'] = $firstname;
-$user_id = $_SESSION['user_id'];
 ?>
 
 <!DOCTYPE html>
@@ -120,7 +119,7 @@ $user_id = $_SESSION['user_id'];
         <ul>
             <li><a href="home.php">Accueil</a></li>
             <li>Posts</li>
-            <li><a href="my_comments.php">Commentaires</a></li>
+            <li><a href="comments.php">Commentaires</a></li>
             <li>Paramètres</li>
         </ul>
         <ul class="logout">
@@ -131,20 +130,20 @@ $user_id = $_SESSION['user_id'];
     <div class="container">
         <h1>Posts de <?php echo isset($_GET['firstname']) ? $_GET['firstname'] : $firstname ?> </h1>
         <a href="new_post.php"><button>Ajouter un post</button></a>
-        <a href="edit_post.php"><button>Modifier un post</button></a>
-        <a href="remove_post.php?post_id=<?php echo $post['post_id']; ?>"><button> Supprimer un post </button></a>
+        <a href="edit_post.php"><button name="update">Modifier un post</button></a>
+        <a href="remove_post.php?post_id=<?php echo $post['post_id']; ?>"><button name="remove"> Supprimer un post </button></a>
 
         <?php foreach ($posts as $post) { ?>
             <div class="post">
                 <h2><?php echo $post['title']; ?></h2>
                 <p><?php echo $post['content']; ?></p>
                 <div class="meta">
-                    <span>Posté par utilisateur <?php echo $post['user_id']; ?></span>
+                <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
                 </div>
             </div>
             <div class="btn">
-                <a href="edit_post.php"><button>Modifier le post</button></a>
-                <a href="remove_post.php"><button>Supprimer le post</button></a>
+            <a href="edit_post.php?post_id=<?php echo $post['post_id']; ?>"><button>Modifier le post</button></a>
+                <a href="remove_post.php?post_id=<?php echo $post['post_id']; ?>"><button>Supprimer le post</button></a>
             </div>
         <?php } ?>
     </div>

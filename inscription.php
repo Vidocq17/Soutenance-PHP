@@ -47,14 +47,14 @@ if (isset($_POST['register'])) {
                         'firstname' => $firstname,
                         'lastname' => $lastname,
                         'pseudo' => $pseudo,
-                        'password' => $hashedPassword,  // Utilisez le mot de passe haché
+                        'password' => $hashedPassword, 
                         'genre' => $gender,
                         'email' => $email 
                     ]);         
                     $_SESSION['user_id'] = $pdo->lastInsertId();
 
-                    // Redirection vers la page home.php après l'enregistrement
-                    header("Location: home.php?firstname=$firstname");
+                    // Redirection après l'enregistrement
+                    header("Location: home.php");
                     exit();
                 } else {
                     $errors[] = "Les mots de passe sont différents";
