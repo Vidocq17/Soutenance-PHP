@@ -4,9 +4,9 @@ session_start();
 $errors = [];
 
 // Vérification si le formulaire a été soumis
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pseudo = $_POST['pseudo'];
-    $password = $_POST['password'];
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $pseudo = $_POST['pseudo'];
+        $password = $_POST['password'];
 
     // Connexion à la base de données avec PDO
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
@@ -14,18 +14,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $passwordDB = 'root';
 
     try {
+        // Requête bdd
         $pdo = new PDO($host, $username, $passwordDB);
         $stmt = $pdo->prepare("SELECT user_id, pseudo, password FROM user WHERE pseudo = :pseudo");
         $stmt->execute(['pseudo' => $pseudo]);
         $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password'])) {
-            // Les informations de connexion sont correctes
-            $_SESSION['user_id'] = $user['user_id']; // Enregistrement de l'ID de l'utilisateur dans la session
+            $_SESSION['user_id'] = $user['user_id'];
             header('Location: home.php');
             exit();
         } else {
-            // Le pseudo ou le mot de passe est incorrect
             $errors[] = "Pseudo ou mot de passe incorrect.";
         }
     } catch (PDOException $e) {
@@ -34,10 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
-
-
-
-
 
 
 <!DOCTYPE html>

@@ -5,14 +5,12 @@ session_start();
 if (isset($_POST['register'])) {
     $errors = [];
 
-    // Récupération des valeurs soumises dans le formulaire
     $firstname = $_POST['firstname'];
     $lastname = $_POST['lastname'];
     $pseudo = $_POST['pseudo'];
     $password = $_POST['password'];
     $password_confirm = $_POST['password_confirm'];
     $gender = $_POST['genre'];
-    //$date_naissance = $_POST['date_naissance'];
     $email = $_POST['email'];
 
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
@@ -23,7 +21,6 @@ if (isset($_POST['register'])) {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     try {
-        // Requête pour vérifier si l'adresse e-mail existe déjà dans la base de données
         $query = "SELECT * FROM user WHERE email = :email";
         $statement = $pdo->prepare($query);
         $statement->execute(['email' => $email]);
@@ -32,17 +29,15 @@ if (isset($_POST['register'])) {
         if ($user) {
             $errors[] = 'Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.';
         } else {
-            // Pseudo moins de 3caractères. 
             if (strlen($pseudo) < 3) {
                 $errors[] = 'Le pseudo doit contenir au moins 3 caractères.';
             } else {   
                 if ($password === $password_confirm) {
-                    // Hachage du mot de passe
+
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-                    // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
-                                                // valeurs dans la bdd                                        Valeurs du formulaire
+
                     $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password)";
-                    // requete préparée
+
                     $statement = $pdo->prepare($query);
                     $statement->execute([
                         'firstname' => $firstname,
@@ -54,7 +49,6 @@ if (isset($_POST['register'])) {
                     ]);         
                     $_SESSION['user_id'] = $pdo->lastInsertId();
 
-                    // Redirection après l'enregistrement
                     header("Location: home.php");
                     exit();
                 } else {

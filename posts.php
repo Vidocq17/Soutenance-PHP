@@ -163,8 +163,6 @@ if ($isAdmin === 'admin') {
     <div class="container">
         <h1>Posts de <?php echo isset($_GET['firstname']) ? $_GET['firstname'] : $firstname ?> </h1>
         <a href="new_post.php"><button>Ajouter un post</button></a>
-        <a href="edit_post.php"><button name="update">Modifier un post</button></a>
-        <a href="remove_post.php?post_id=<?php echo $post['post_id']; ?>"><button name="remove"> Supprimer un post </button></a>
 
         <?php foreach ($posts as $post) { ?>
             <div class="post">

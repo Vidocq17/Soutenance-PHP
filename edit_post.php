@@ -9,49 +9,41 @@ if (!isset($_SESSION['user_id'])) {
 
 // Vérification si un post_id a été passé en paramètre
 if (!isset($_GET['post_id'])) {
-    // Redirection vers la page de gestion des posts ou affichage d'un message d'erreur
     echo "Le post à modifier n'a pas été spécifié.";
     exit();
 }
 
 // Récupération du post_id depuis les paramètres de l'URL
-$post_id = $_GET['post_id'];
+    $post_id = $_GET['post_id'];
 
 // Connexion à la base de données
-$host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
-$usernameDB = 'root';
-$passwordDB = 'root';
+    $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
+    $usernameDB = 'root';
+    $passwordDB = 'root';
 
-$pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
+    $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 // Récupération de l'ID de l'utilisateur connecté
-$user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION['user_id'];
 
 // Vérification si le post appartient à l'utilisateur connecté
-$query = "SELECT * FROM post WHERE post_id = :post_id AND user_id = :user_id";
-$statement = $pdo->prepare($query);
-$statement->bindValue(':post_id', $post_id);
-$statement->bindValue(':user_id', $user_id);
-$statement->execute();
-$post = $statement->fetch(PDO::FETCH_ASSOC);
+    $query = "SELECT * FROM post WHERE post_id = :post_id AND user_id = :user_id";
+    $statement = $pdo->prepare($query);
+    $statement->bindValue(':post_id', $post_id);
+    $statement->bindValue(':user_id', $user_id);
+    $statement->execute();
+    $post = $statement->fetch(PDO::FETCH_ASSOC);
 
 if (!$post) {
-    // Redirection vers la page de gestion des posts ou affichage d'un message d'erreur
     echo "Le post spécifié n'existe pas ou ne vous appartient pas.";
     exit();
 }
 
-// Traitement du formulaire de modification de post
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des données du formulaire
     $title = $_POST['title'];
     $content = $_POST['content'];
 
-    // Validation des données (vous pouvez ajouter des validations supplémentaires selon vos besoins)
-
-    // Mise à jour du post dans la base de données
     $query = "UPDATE post SET title = :title, content = :content WHERE post_id = :post_id";
     $statement = $pdo->prepare($query);
     $statement->bindValue(':title', $title);
@@ -59,7 +51,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $statement->bindValue(':post_id', $post_id);
     $statement->execute();
 
-    // Redirection vers la page de gestion des posts ou affichage d'un message de succès
     header('Location: posts.php');
     exit();
 }
@@ -142,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </form>
         <div class="button-container">
-            <a href="posts.php">Annuler</a>
+            <a href="posts.php">Retour</a>
         </div>
     </div>
 </body>

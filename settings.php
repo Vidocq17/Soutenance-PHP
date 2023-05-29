@@ -1,15 +1,11 @@
 <?php
-// démarrer la session d'utilisateur
 session_start();
 
 
-// Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
-    // Redirection vers la page de connexion si pas connecté
     header('Location: inscription.php');
     exit();
 }
-// 2léments de connection à la bdd
 $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
 $usernameDB = 'root';
 $passwordDB = 'root';
@@ -18,14 +14,11 @@ try {
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
-    // Gestion des erreurs de connexion à la base de données
     die('Erreur de connexion à la base de données : ' . $e->getMessage());
 }
 
-// Récupération de l'ID de l'utilisateur connecté
 $user_id = $_SESSION['user_id'];
 
-// Récupération des informations de l'utilisateur depuis la base de données
 $query = "SELECT * FROM user WHERE user_id = :user_id";
 $statement = $pdo->prepare($query);
 $statement->bindValue(':user_id', $user_id);
@@ -33,20 +26,16 @@ $statement->execute();
 $user = $statement->fetch(PDO::FETCH_ASSOC);
 
 if (!$user) {
-    // Redirection ou affichage d'un message d'erreur si l'utilisateur n'existe pas
     echo "Utilisateur introuvable.";
     exit();
 }
 
-// Traitement du formulaire de mise à jour
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des nouvelles valeurs des champs de formulaire
     $lastname = $_POST['lastname'];
     $firstname = $_POST['firstname'];
     $pseudo = $_POST['pseudo'];
     $email = $_POST['email'];
 
-    // Mise à jour des informations de l'utilisateur dans la base de données
     $query = "UPDATE user SET lastname = :lastname, firstname = :firstname, pseudo = :pseudo, email = :email WHERE user_id = :user_id";
     $statement = $pdo->prepare($query);
     $statement->bindValue(':lastname', $lastname);
@@ -56,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $statement->bindValue(':user_id', $user_id);
     $statement->execute();
 
-    // Redirection vers la page de confirmation ou affichage d'un message de succès
     header('Location: settings.php');
     exit();
 }

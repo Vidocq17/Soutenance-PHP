@@ -15,41 +15,38 @@ if (!isset($_GET['comment_id'])) {
 }
 
 // Récupération du comment_id depuis les paramètres de l'URL
-$comment_id = $_GET['comment_id'];
+    $comment_id = $_GET['comment_id'];
 
 // Connexion à la base de données
-$host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
-$usernameDB = 'root';
-$passwordDB = 'root';
+    $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
+    $usernameDB = 'root';
+    $passwordDB = 'root';
 
-$pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
 // Récupération de l'ID de l'utilisateur connecté
-$user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION['user_id'];
 
 // Vérification si le commentaire appartient à l'utilisateur connecté
-$query = "SELECT * FROM comment WHERE comment_id = :comment_id AND user_id = :user_id";
-$statement = $pdo->prepare($query);
-$statement->bindValue(':comment_id', $comment_id);
-$statement->bindValue(':user_id', $user_id);
-$statement->execute();
-$comment = $statement->fetch(PDO::FETCH_ASSOC);
+    $query = "SELECT * FROM comment WHERE comment_id = :comment_id AND user_id = :user_id";
+    $statement = $pdo->prepare($query);
+    $statement->bindValue(':comment_id', $comment_id);
+    $statement->bindValue(':user_id', $user_id);
+    $statement->execute();
+    $comment = $statement->fetch(PDO::FETCH_ASSOC);
 
 if (!$comment) {
-    // Redirection vers la page de gestion des posts ou affichage d'un message d'erreur
     echo "Le commentaire spécifié n'existe pas ou ne vous appartient pas.";
     exit();
 }
 
-// Traitement du formulaire de modification de commentaire
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupération des données du formulaire
     $comment_title = $_POST['comment_title'];
     $comment_content = $_POST['comment_content'];
 
-    // Mise à jour du commentaire dans la base de données
     $query = "UPDATE comment SET title = :comment_title, content = :comment_content WHERE comment_id = :comment_id";
     $statement = $pdo->prepare($query);
     $statement->bindValue(':comment_title', $comment_title);
@@ -57,7 +54,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $statement->bindValue(':comment_id', $comment_id);
     $statement->execute();    
 
-    // Redirection vers la page de gestion des commentaires ou affichage d'un message de succès
     header('Location: comments.php');
     exit();
 }
@@ -125,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <h1>Modifier le commentaire</h1>
         <form method="POST">
             <div class="form-group">
-                <label for="title">Titre du commentaire (optionnel) :</label>
+                <label for="title">Titre du commentaire:</label>
                 <input type="text" name="comment_title" id="title" value="<?php echo $comment['title']; ?>">
             </div>
             <div class="form-group">

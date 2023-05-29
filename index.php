@@ -17,7 +17,7 @@
         }
 
         p {
-            font-size: 18px;
+            font-size: 15px;
             margin-left: 20%;
             margin-right: 20%;
         }
