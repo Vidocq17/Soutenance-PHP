@@ -8,6 +8,10 @@ if (!isset($_SESSION['user_id'])) {
    header('Location: inscription.php');
     exit();
 }
+if(!isset($_POST['post_id'])) {
+    echo "Vous n'avez pas sélectionné de post à commenter"; 
+    exit();
+}
 
 // Récupération de l'ID de l'utilisateur connecté
     $userId = $_SESSION['user_id'];
@@ -15,11 +19,19 @@ if (!isset($_SESSION['user_id'])) {
 // récupération des valeurs dans le formulaire : 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+
         // Attribution des $
-    $comment_title =  $_POST['title'];
-    $comment_content =  $_POST['content'];
-    $post_id = $_POST['post_id'];
+    $comment_title =  $_POST['comment_title'];
+    $comment_content =  $_POST['comment_content'];
     $user_id = $_SESSION['user_id'];
+
+// Récupérer le post_id depuis l'URL 
+    $post_id = $_GET['post_id'];
+
+    if(!isset($_POST['post_id'])) {
+        echo "Vous n'avez pas sélectionné de post à commenter"; 
+        exit();
+    }
 
 // Code d'accès à la bdd
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
@@ -36,7 +48,7 @@ if (!isset($_SESSION['user_id'])) {
     try {
         $statement = $pdo->prepare($query);
         // Identification des variables dans le formulaire
-        $statement->execute([$title,$content,$user_id, $post_id]);
+        $statement->execute([$comment_title, $comment_content, $user_id, $post_id]);
         
         echo "Nouveau commentaire enregistré";
     } catch (PDOException $e) {
@@ -112,11 +124,11 @@ if (!isset($_SESSION['user_id'])) {
         <form method="POST" action="new_comment.php">
             <div class="form-group">
                 <label for="title">Titre du commentaire (optionnel) :</label>
-                <input type="text" name="title" id="title">
+                <input type="text" name="comment_title" id="title">
             </div>
             <div class="form-group">
                 <label for="content">Contenu du commentaire :</label>
-                <textarea id="content" name="content" required></textarea>
+                <textarea id="content" name="comment_content" required></textarea>
             </div>
             <div class="form-group">
                 <label for="tags">Tags :</label>

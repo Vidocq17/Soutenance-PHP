@@ -3,7 +3,7 @@ session_start();
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     // Redirection vers la page de connexion ou affichage d'un message d'erreur
-    header('Location: Pages/inscription.php');
+    header('Location: inscription.php');
     exit();
 }
 // Connexion à la base de données

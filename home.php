@@ -23,6 +23,12 @@ $statement = $pdo->prepare($query);
 $statement->execute();
 $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
 
+// Récupérer les commentaires depuis la bdd
+$query = "SELECT * FROM comment";
+$statement = $pdo->prepare($query);
+$statement->execute();
+$comments = $statement->FetchAll(PDO::FETCH_ASSOC);
+
 // Récupérer le prénom de l'utilisateur depuis la bdd
 $user_id = $_SESSION['user_id'];
 $query = "SELECT firstname FROM user WHERE user_id = :user_id";
@@ -31,6 +37,8 @@ $statement->bindParam(':user_id', $user_id);
 $statement->execute();
 $user = $statement->fetch(PDO::FETCH_ASSOC);
 $firstname = $user['firstname'];
+
+
 
 // Attribution du prénom à la variable de session
 $_SESSION['firstname'] = $firstname;
@@ -158,9 +166,26 @@ $_SESSION['firstname'] = $firstname;
             <div class="meta">
             <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
             </div>
-           <a href="comment.php"> <button>Commenter</button> </a>
+           <a href="new_comment.php?post_id=<?php echo $post['post_id']; ?>"> <button>Commenter</button> </a>
         </div>
-    <?php } ?>
+        <div class="posts">
+    <?php foreach ($comments as $comment) {
+        $commentId = $comment['comment_id'];
+        $comment_title = $comment['title'];
+        $comment_content = $comment['content'];
+        $user_id = $comment['user_id'];
+        $post_id  = $comment['post_id']
+        ?>
+        <div class="comment">
+        <h2><?php echo $comment_title; ?></h2>
+            <p><?php echo $comment_content; ?></p>
+            <div class="meta">
+            <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
+            </div>
+           <a href="comments.php"> <button>Commenter</button> </a>
+        </div>
+        </div>
+    <?php } }?>
 </div>
 </body>
 </html>
