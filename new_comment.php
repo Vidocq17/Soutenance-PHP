@@ -1,53 +1,48 @@
-<?php 
+<?php
 
 session_start();
 
 // Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
     // Redirection vers la page de connexion ou affichage d'un message d'erreur
-   header('Location: inscription.php');
+    header('Location: inscription.php');
     exit();
 }
 
 // Récupération de l'ID de l'utilisateur connecté
-    $userId = $_SESSION['user_id'];
+$userId = $_SESSION['user_id'];
 
-// récupération des valeurs dans le formulaire : 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+// Récupérer le post_id depuis l'URL
+if (!isset($_GET['post_id'])) {
+    echo "Vous n'avez pas sélectionné de post à commenter"; ?>
+    <a href="home.php"><button>Retour à l'accueil</button></a>
+    <?php
+    exit();
+}
+$post_id = $_GET['post_id'];
 
-
-    // Attribution des $
-    $comment_title =  $_POST['comment_title'];
-    $comment_content =  $_POST['comment_content'];
+// récupération des valeurs dans le formulaire :
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Attribution des variables
+    $comment_title = $_POST['comment_title'];
+    $comment_content = $_POST['comment_content'];
     $user_id = $_SESSION['user_id'];
 
-// Récupérer le post_id depuis l'URL 
-    $post_id = $_GET['post_id'];
-
-    if(!isset($_GET['post_id'])) {
-        echo "Vous n'avez pas sélectionné de post à commenter"; ?>
-        <a href="home.php"><button>Retour à l'accueil</button></a>
-        <?php
-        exit();
-    }
-
-// Code d'accès à la bdd
+    // Code d'accès à la bdd
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $usernameDB = 'root';
     $passwordDB = 'root';
-// Connexion à la bdd
-
+    // Connexion à la bdd
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-// requète d'insertion dans la table SQL
-
-    $query = ("INSERT INTO comment (title, content, user_id, post_id) VALUES (?, ?, ?, ?)");
+    // requète d'insertion dans la table SQL
+    $query = "INSERT INTO comment (title, content, user_id, post_id) VALUES (?, ?, ?, ?)";
 
     try {
         $statement = $pdo->prepare($query);
         // Identification des variables dans le formulaire
         $statement->execute([$comment_title, $comment_content, $user_id, $post_id]);
-        
+
         echo "Nouveau commentaire enregistré";
     } catch (PDOException $e) {
         echo "Erreur : " . $e->getMessage();
@@ -119,7 +114,7 @@ if (!isset($_SESSION['user_id'])) {
 <body>
     <div class="container">
         <h1>Nouveau commentaire</h1>
-        <form method="POST" action="new_comment.php?post_id=<?php echo $_GET['post_id']; ?>">
+        <form method="POST" action="new_comment.php?post_id=<?php echo $post_id; ?>">
             <div class="form-group">
                 <label for="title">Titre du commentaire (optionnel) :</label>
                 <input type="text" name="comment_title" id="title">
@@ -135,7 +130,7 @@ if (!isset($_SESSION['user_id'])) {
             <div class="form-group">
                 <button type="submit">Publier</button>
                 <a href="home.php" class="button">Accueil</a>
-                <a href="posts.php" class="button">mes posts</a>
+                <a href="posts.php" class="button">Mes posts</a>
             </div>
         </form>
     </div>

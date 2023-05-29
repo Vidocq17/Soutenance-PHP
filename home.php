@@ -103,6 +103,7 @@ $_SESSION['firstname'] = $firstname;
             background-color: #f9f9f9;
             border: 1px solid #ccc;
             border-radius: 4px;
+            background-color: green;
         }
 
         .post h2 {
@@ -119,6 +120,31 @@ $_SESSION['firstname'] = $firstname;
         }
 
         .post .meta span {
+            margin-right: 10px;
+        }
+        .comment {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: blue;
+        }
+
+        .comment h2 {
+            margin-bottom: 10px;
+        }
+
+        .comment p {
+            margin-bottom: 10px;
+        }
+
+        .comment .meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .comment .meta span {
             margin-right: 10px;
         }
 
@@ -168,7 +194,8 @@ $_SESSION['firstname'] = $firstname;
             </div>
            <a href="new_comment.php?post_id=<?php echo $post['post_id']; ?>"> <button>Commenter</button> </a>
         </div>
-        <div class="posts">
+    </div>
+        <div class="comments">
     <?php foreach ($comments as $comment) {
         $commentId = $comment['comment_id'];
         $comment_title = $comment['title'];
@@ -186,6 +213,5 @@ $_SESSION['firstname'] = $firstname;
         </div>
         </div>
     <?php } }?>
-</div>
 </body>
 </html>
