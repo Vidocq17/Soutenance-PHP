@@ -88,7 +88,7 @@ $_SESSION['firstname'] = $firstname;
             margin-bottom: 20px;
         }
 
-        .post {
+        .comment {
             margin-bottom: 20px;
             padding: 10px;
             background-color: #f9f9f9;
@@ -96,20 +96,20 @@ $_SESSION['firstname'] = $firstname;
             border-radius: 4px;
         }
 
-        .post h2 {
+        .comment h2 {
             margin-bottom: 10px;
         }
 
-        .post p {
+        .comment p {
             margin-bottom: 10px;
         }
 
-        .post .meta {
+        .comment .meta {
             font-size: 12px;
             color: #666;
         }
 
-        .post .meta span {
+        .comment .meta span {
             margin-right: 10px;
         }
     </style>
@@ -129,12 +129,9 @@ $_SESSION['firstname'] = $firstname;
 
     <div class="container">
         <h1>Commentaires de <?php echo isset($_GET['firstname']) ? $_GET['firstname'] : $firstname ?> </h1>
-        <a href="new_comment.php"><button>Ajouter un commentaire</button></a>
-        <a href="edit_comment.php"><button name="update">Modifier un commentaire</button></a>
-        <a href="remove_comment.php?post_id=<?php echo $post['post_id']; ?>"><button name="remove"> Supprimer un commentaire </button></a>
 
         <?php foreach ($comments as $comment) { ?>
-            <div class="post">
+            <div class="comment">
                 <h2><?php echo $comment['title']; ?></h2>
                 <p><?php echo $comment['content']; ?></p>
                 <div class="meta">
@@ -142,9 +139,9 @@ $_SESSION['firstname'] = $firstname;
                 </div>
             </div>
             <div class="btn">
-                <!-- Préciser l'id du post, pas idéal mais j'ai rien trouvé de mieux pour l'instant -->
-            <a href="edit_post.php?post_id=<?php echo $post['post_id']; ?>"><button>Modifier le post</button></a>
-            <a href="remove_post.php?post_id=<?php echo $post['post_id']; ?>"><button>Supprimer le post</button></a>
+                <!-- Préciser l'id du comment, pas idéal mais j'ai rien trouvé de mieux pour l'instant -->
+            <a href="edit_comment.php?comment_id=<?php echo $comment['comment_id']; ?>"><button>Modifier le commentaire</button></a>
+            <a href="remove_comment.php?comment_id=<?php echo $comment['comment_id']; ?>"><button>Supprimer le commentaire</button></a>
             </div>
         <?php } ?>
     </div>

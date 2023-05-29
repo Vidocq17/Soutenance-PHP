@@ -209,7 +209,6 @@ $_SESSION['firstname'] = $firstname;
             <div class="meta">
             <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
             </div>
-           <a href="comments.php"> <button>Commenter</button> </a>
         </div>
         </div>
     <?php } }?>
