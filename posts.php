@@ -33,6 +33,25 @@ $firstname = $user['firstname'];
 
 // Attribution du prénom à la variable de session
 $_SESSION['firstname'] = $firstname;
+
+// Récupérer le prénom de l'utilisateur et son rôle depuis la base de données
+$query = "SELECT isAdmin FROM user WHERE user_id = :user_id";
+$statement = $pdo->prepare($query);
+$statement->bindParam(':user_id', $user_id);
+$statement->execute();
+$user = $statement->fetch(PDO::FETCH_ASSOC);
+$isAdmin = $user['isAdmin'];
+
+// Vérification si l'utilisateur est administrateur
+if ($isAdmin === 'admin') {
+    // Récupération de tous les posts
+    $query = "SELECT * FROM post";
+    $statement = $pdo->query($query);
+    $posts = $statement->fetchAll(PDO::FETCH_ASSOC);
+} else {
+ 
+}
+
 ?>
 
 <!DOCTYPE html>

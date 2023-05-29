@@ -114,8 +114,9 @@ $_SESSION['firstname'] = $firstname;
         }
 
         .post .meta {
-            font-size: 12px;
-            color: #666;
+            font-size: 18px;
+            color: black;
+            margin-bottom: 20px;
         }
 
         .post .meta span {
@@ -139,7 +140,7 @@ $_SESSION['firstname'] = $firstname;
         }
 
         .comment .meta {
-            font-size: 12px;
+            font-size: 18px;
             color: #666;
         }
 
@@ -193,7 +194,7 @@ $_SESSION['firstname'] = $firstname;
                 <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
             </div>
             <a href="new_comment.php?post_id=<?php echo $post['post_id']; ?>"><button>Commenter</button></a>
-            <a href="edit_post.php?post=id=<?php echo $post['post_id']; ?>"><button>Modifier le post</button></a>
+
 
             <div class="comments">
                 <?php foreach ($comments as $comment) {
