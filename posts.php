@@ -112,15 +112,28 @@ $_SESSION['firstname'] = $firstname;
         .post .meta span {
             margin-right: 10px;
         }
+        .logout {
+            text-align: right;
+        }
+
+        .logout a {
+            color: #666;
+            text-decoration: none;
+        }
+
+        .logout a:hover {
+            text-decoration: underline;
+            color: white;
+        }
     </style>
 </head>
 <body>
     <header>
         <ul>
             <li><a href="home.php">Accueil</a></li>
-            <li>Posts</li>
+            <li><a href="posts.php">Posts</li></a>
             <li><a href="comments.php">Commentaires</a></li>
-            <li>Paramètres</li>
+            <li><a href="settings.php">Paramètres</li></a>
         </ul>
         <ul class="logout">
             <li><a href="logout.php">Se déconnecter</a></li>

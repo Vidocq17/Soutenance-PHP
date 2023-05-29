@@ -157,6 +157,7 @@ $_SESSION['firstname'] = $firstname;
 
         .logout a:hover {
             text-decoration: underline;
+            color: white;
         }
     </style>
     <title>Accueil</title>
@@ -170,7 +171,7 @@ $_SESSION['firstname'] = $firstname;
         <li><a href="settings.php">Paramètres</a></li>
     </ul>
     <ul class="logout">
-       <a href="Compte/inscription.php"> <li>Se déconnecter</li></a>
+        <li><a href="logout.php">Se déconnecter</a></li>
     </ul>
 </header>
 <div class="container">

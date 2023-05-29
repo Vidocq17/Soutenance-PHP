@@ -42,7 +42,6 @@ if (isset($_POST['register'])) {
                     // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
                     $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password)";
                     $statement = $pdo->prepare($query);
-
                     $statement->execute([
                         'firstname' => $firstname,
                         'lastname' => $lastname,
