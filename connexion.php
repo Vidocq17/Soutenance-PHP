@@ -10,15 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Connexion à la base de données avec PDO
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
-    $usernameDB = 'root';
+    $username = 'root';
     $passwordDB = 'root';
 
-
-
     try {
-        $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $stmt = $pdo->prepare("SELECT pseudo, password FROM user WHERE pseudo = :pseudo");
+        $pdo = new PDO($host, $username, $passwordDB);
+        $stmt = $pdo->prepare("SELECT user_id, pseudo, password FROM user WHERE pseudo = :pseudo");
         $stmt->execute(['pseudo' => $pseudo]);
         $user = $stmt->fetch();
 
@@ -36,10 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Stockage des erreurs dans la session
-$_SESSION['errors'] = $errors;
-header('Location: connexion.php');
-exit();
 ?>
 
 

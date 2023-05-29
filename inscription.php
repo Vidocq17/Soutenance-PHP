@@ -200,7 +200,7 @@ if (isset($_POST['register'])) {
         <input type="submit" value="Inscription" name="register">
     </form>
     <div class="links">
-    <a href="connexion2.php">Déjà inscrit ?</a>
+    <a href="connexion.php">Déjà inscrit ?</a>
     <a href="index.php">Page d'accueil</a>
     </div>
     </div>
