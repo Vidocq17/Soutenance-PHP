@@ -38,8 +38,6 @@ $statement->execute();
 $user = $statement->fetch(PDO::FETCH_ASSOC);
 $firstname = $user['firstname'];
 
-
-
 // Attribution du prénom à la variable de session
 $_SESSION['firstname'] = $firstname;
 ?>
@@ -169,7 +167,7 @@ $_SESSION['firstname'] = $firstname;
         <li><a href="home.php">Accueil</a></li>
         <li><a href="posts.php">Posts</a></li>
         <li><a href="comments.php">Commentaires</a></li>
-        <li>Paramètres</li>
+        <li><a href="settings.php">Paramètres</a></li>
     </ul>
     <ul class="logout">
        <a href="Compte/inscription.php"> <li>Se déconnecter</li></a>
