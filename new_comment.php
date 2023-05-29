@@ -8,10 +8,6 @@ if (!isset($_SESSION['user_id'])) {
    header('Location: inscription.php');
     exit();
 }
-if(!isset($_POST['post_id'])) {
-    echo "Vous n'avez pas sélectionné de post à commenter"; 
-    exit();
-}
 
 // Récupération de l'ID de l'utilisateur connecté
     $userId = $_SESSION['user_id'];
@@ -20,7 +16,7 @@ if(!isset($_POST['post_id'])) {
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
-        // Attribution des $
+    // Attribution des $
     $comment_title =  $_POST['comment_title'];
     $comment_content =  $_POST['comment_content'];
     $user_id = $_SESSION['user_id'];
@@ -28,8 +24,10 @@ if(!isset($_POST['post_id'])) {
 // Récupérer le post_id depuis l'URL 
     $post_id = $_GET['post_id'];
 
-    if(!isset($_POST['post_id'])) {
-        echo "Vous n'avez pas sélectionné de post à commenter"; 
+    if(!isset($_GET['post_id'])) {
+        echo "Vous n'avez pas sélectionné de post à commenter"; ?>
+        <a href="home.php"><button>Retour à l'accueil</button></a>
+        <?php
         exit();
     }
 
@@ -121,7 +119,7 @@ if(!isset($_POST['post_id'])) {
 <body>
     <div class="container">
         <h1>Nouveau commentaire</h1>
-        <form method="POST" action="new_comment.php">
+        <form method="POST" action="new_comment.php?post_id=<?php echo $_GET['post_id']; ?>">
             <div class="form-group">
                 <label for="title">Titre du commentaire (optionnel) :</label>
                 <input type="text" name="comment_title" id="title">
