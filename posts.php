@@ -11,8 +11,9 @@ $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
 $usernameDB = 'root';
 $passwordDB = 'root';
 
-$pdo = new PDO($host, $usernameDB, $passwordDB);
+$pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 
 // Récupération des posts de l'utilisateur
 $user_id = $_SESSION['user_id'];

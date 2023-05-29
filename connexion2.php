@@ -10,14 +10,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Connexion à la base de données avec PDO
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
-    $usernameDB = 'root';
+    $username = 'root';
     $passwordDB = 'root';
 
-
-
     try {
-        $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $pdo = new PDO($host, $username, $passwordDB);
         $stmt = $pdo->prepare("SELECT pseudo, password FROM user WHERE pseudo = :pseudo");
         $stmt->execute(['pseudo' => $pseudo]);
         $user = $stmt->fetch();
@@ -34,17 +31,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } catch (PDOException $e) {
         echo "Erreur lors de la vérification des informations de connexion : " . $e->getMessage();
     }
+
 }
-
-// Stockage des erreurs dans la session
-$_SESSION['errors'] = $errors;
-header('Location: connexion.php');
-exit();
 ?>
-
-
-
-
 
 
 <!DOCTYPE html>
@@ -134,7 +123,7 @@ exit();
             <?php endforeach; ?>
             <?php unset($_SESSION['errors']); ?>
         <?php endif; ?>
-        <form method="POST" action="connexion.php">
+        <form method="POST" action="connexion2.php">
             <div>
                 <label for="pseudo">Pseudo :</label>
                 <input type="text" id="pseudo" name="pseudo" required>

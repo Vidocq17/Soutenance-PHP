@@ -32,9 +32,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $usernameDB = 'root';
     $passwordDB = 'root';
-    // Connexion à la bdd
+
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
     // requète d'insertion dans la table SQL
     $query = "INSERT INTO comment (title, content, user_id, post_id) VALUES (?, ?, ?, ?)";
 

@@ -9,13 +9,14 @@ if (!isset($_SESSION['user_id'])) {
     header('Location: inscription.php');
     exit();
 }
-// 2léments de connection à la bdd
+// Éléments de connection à la bdd
 $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
 $usernameDB = 'root';
 $passwordDB = 'root';
-// Requète de connection à la bdd
+// Requete de connection à la bdd
 $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 
 // Récupérer les posts depuis la bdd
 $query = "SELECT * FROM post";
@@ -189,27 +190,31 @@ $_SESSION['firstname'] = $firstname;
             <h2><?php echo $title; ?></h2>
             <p><?php echo $content; ?></p>
             <div class="meta">
-            <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
+                <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
             </div>
-           <a href="new_comment.php?post_id=<?php echo $post['post_id']; ?>"> <button>Commenter</button> </a>
-        </div>
-    </div>
-        <div class="comments">
-    <?php foreach ($comments as $comment) {
-        $commentId = $comment['comment_id'];
-        $comment_title = $comment['title'];
-        $comment_content = $comment['content'];
-        $user_id = $comment['user_id'];
-        $post_id  = $comment['post_id']
-        ?>
-        <div class="comment">
-        <h2><?php echo $comment_title; ?></h2>
-            <p><?php echo $comment_content; ?></p>
-            <div class="meta">
-            <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
+            <a href="new_comment.php?post_id=<?php echo $post['post_id']; ?>"><button>Commenter</button></a>
+            <a href="edit_post.php?post=id=<?php echo $post['post_id']; ?>"><button>Modifier le post</button></a>
+
+            <div class="comments">
+                <?php foreach ($comments as $comment) {
+                    if ($comment['post_id'] === $postId) {
+                        $commentId = $comment['comment_id'];
+                        $comment_title = $comment['title'];
+                        $comment_content = $comment['content'];
+                        $user_id = $comment['user_id'];
+                        ?>
+                        <div class="comment">
+                            <h2><?php echo $comment_title; ?></h2>
+                            <p><?php echo $comment_content; ?></p>
+                            <div class="meta">
+                                <span>Posté par utilisateur <?php echo $_SESSION['firstname']; ?></span>
+                            </div>
+                        </div>
+                    <?php }
+                } ?>
             </div>
         </div>
-        </div>
-    <?php } }?>
+    <?php } ?>
+</div>
 </body>
 </html>

@@ -18,13 +18,14 @@ if (!isset($_SESSION['user_id'])) {
     $title =  $_POST['title'];
     $content =  $_POST['content'];
     $user_id = $_SESSION['user_id'];
-// Code d'accès à la bdd
+    // Code d'accès à la bdd
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $usernameDB = 'root';
     $passwordDB = 'root';
-// Connexion à la bdd
+
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 // requète d'insertion dans la table SQL
     $query = ("INSERT INTO post (title, content, user_id) VALUES (?, ?, ?)");
 

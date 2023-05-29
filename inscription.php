@@ -32,7 +32,7 @@ if (isset($_POST['register'])) {
         if ($user) {
             $errors[] = 'Cette adresse e-mail est déjà utilisée. Veuillez en choisir une autre.';
         } else {
-            // Validation du pseudo
+            // Pseudo moins de 3caractères. 
             if (strlen($pseudo) < 3) {
                 $errors[] = 'Le pseudo doit contenir au moins 3 caractères.';
             } else {   
@@ -40,7 +40,9 @@ if (isset($_POST['register'])) {
                     // Hachage du mot de passe
                     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
                     // Enregistrement de l'utilisateur si pas d'erreurs dans le formulaire
+                                                // valeurs dans la bdd                                        Valeurs du formulaire
                     $query = "INSERT INTO user (lastname, firstname, pseudo, gender, email, password) VALUES (:lastname, :firstname, :pseudo, :genre, :email, :password)";
+                    // requete préparée
                     $statement = $pdo->prepare($query);
                     $statement->execute([
                         'firstname' => $firstname,
@@ -65,8 +67,6 @@ if (isset($_POST['register'])) {
     }
 }
 ?>
-
-
 
 <!DOCTYPE html>
 <html>
@@ -197,10 +197,10 @@ if (isset($_POST['register'])) {
         <label for="password_confirm">Confirmez votre mot de passe :</label>
         <input type="password" id="password_confirm" name="password_confirm" required><br />
 
-        <input type="submit" class="btn btn-primary" value="Inscription" name="register">
+        <input type="submit" value="Inscription" name="register">
     </form>
     <div class="links">
-    <a href="connexion.php">Déjà inscrit ?</a>
+    <a href="connexion2.php">Déjà inscrit ?</a>
     <a href="index.php">Page d'accueil</a>
     </div>
     </div>
