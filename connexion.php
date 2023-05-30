@@ -3,18 +3,15 @@ session_start();
 
 $errors = [];
 
-// Vérification si le formulaire a été soumis
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pseudo = $_POST['pseudo'];
         $password = $_POST['password'];
 
-    // Connexion à la base de données avec PDO
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $username = 'root';
     $passwordDB = 'root';
 
     try {
-        // Requête bdd
         $pdo = new PDO($host, $username, $passwordDB);
         $stmt = $pdo->prepare("SELECT user_id, pseudo, password FROM user WHERE pseudo = :pseudo");
         $stmt->execute(['pseudo' => $pseudo]);

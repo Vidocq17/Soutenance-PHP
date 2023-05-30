@@ -1,23 +1,17 @@
 <?php
 session_start();
-// Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
-    // Redirection vers la page de connexion ou affichage d'un message d'erreur
     header('Location: inscription.php');
     exit();
 }
 
-// Vérification si un comment_id a été passé en paramètre
 if (!isset($_GET['comment_id'])) {
-    // Redirection vers la page de gestion des posts ou affichage d'un message d'erreur
     echo "Le commentaire à modifier n'a pas été spécifié.";
     exit();
 }
 
-// Récupération du comment_id depuis les paramètres de l'URL
     $comment_id = $_GET['comment_id'];
 
-// Connexion à la base de données
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $usernameDB = 'root';
     $passwordDB = 'root';
@@ -25,11 +19,8 @@ if (!isset($_GET['comment_id'])) {
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-
-// Récupération de l'ID de l'utilisateur connecté
     $user_id = $_SESSION['user_id'];
 
-// Vérification si le commentaire appartient à l'utilisateur connecté
     $query = "SELECT * FROM comment WHERE comment_id = :comment_id AND user_id = :user_id";
     $statement = $pdo->prepare($query);
     $statement->bindValue(':comment_id', $comment_id);
@@ -43,7 +34,6 @@ if (!$comment) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Récupération des données du formulaire
     $comment_title = $_POST['comment_title'];
     $comment_content = $_POST['comment_content'];
 

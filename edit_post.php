@@ -1,22 +1,17 @@
 <?php
 session_start();
-// Vérification si l'utilisateur est connecté
 if (!isset($_SESSION['user_id'])) {
-    // Redirection vers la page de connexion ou affichage d'un message d'erreur
     header('Location: inscription.php');
     exit();
 }
 
-// Vérification si un post_id a été passé en paramètre
 if (!isset($_GET['post_id'])) {
     echo "Le post à modifier n'a pas été spécifié.";
     exit();
 }
 
-// Récupération du post_id depuis les paramètres de l'URL
     $post_id = $_GET['post_id'];
 
-// Connexion à la base de données
     $host = 'mysql:host=localhost:8889;dbname=Soutenance_PHP';
     $usernameDB = 'root';
     $passwordDB = 'root';
@@ -24,10 +19,8 @@ if (!isset($_GET['post_id'])) {
     $pdo = new PDO("mysql:host=localhost:8889;dbname=Soutenance_PHP", "root", "root");
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-// Récupération de l'ID de l'utilisateur connecté
     $user_id = $_SESSION['user_id'];
 
-// Vérification si le post appartient à l'utilisateur connecté
     $query = "SELECT * FROM post WHERE post_id = :post_id AND user_id = :user_id";
     $statement = $pdo->prepare($query);
     $statement->bindValue(':post_id', $post_id);
